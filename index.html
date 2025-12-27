@@ -176,11 +176,10 @@
     }
 
     .term-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      column-gap: 16px;
     }
 
     .meaning {
@@ -242,14 +241,17 @@
       border: 1px solid var(--border);
       background: var(--pronounce-bg);
       box-shadow: var(--pronounce-shadow);
+      justify-self: start;
+      margin-left: 4%;
+      margin-top: 4px;
       opacity: 1;
-      transform: translateY(0px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: none;
+      transition: none;
     }
 
     .pronounce.is-hidden {
       opacity: 0;
-      transform: translateY(8px);
+      transform: none;
     }
 
     .pronounce-label {
@@ -384,7 +386,13 @@
 
     @media (max-width: 720px) {
       .term-row {
-        align-items: flex-start;
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+        justify-items: start;
+      }
+
+      .pronounce {
+        margin-left: 0;
       }
     }
 
@@ -408,7 +416,6 @@
       <div class="term-row">
         <h2 class="term" id="term">Loading...</h2>
         <div class="pronounce is-hidden" id="pronounce">
-          <!-- <div class="pronounce-label">Respell</div> -->
           <div class="pronounce-value" id="respell">[FOH-toh]</div>
         </div>
       </div>
