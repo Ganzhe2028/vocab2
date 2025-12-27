@@ -6,7 +6,7 @@
   <title>Vocabulary Loop</title>
   <style>
     :root {
-      color-scheme: light;
+      color-scheme: light dark;
       --bg-sand: #f6ead4;
       --bg-mint: #d9f2e7;
       --bg-sky: #cfe3f4;
@@ -17,6 +17,49 @@
       --card: rgba(255, 255, 255, 0.7);
       --border: rgba(31, 42, 36, 0.14);
       --shadow: 0 24px 60px rgba(31, 42, 36, 0.18);
+      --glow-1: rgba(229, 106, 84, 0.15);
+      --glow-2: rgba(30, 127, 111, 0.18);
+      --orb-1: #f4b183;
+      --orb-2: #7fc5b3;
+      --button-bg: rgba(255, 255, 255, 0.8);
+      --button-border: rgba(31, 42, 36, 0.2);
+      --accent-soft: rgba(229, 106, 84, 0.12);
+      --accent-border: rgba(229, 106, 84, 0.6);
+      --pos-bg: rgba(30, 127, 111, 0.14);
+      --pos-border: rgba(30, 127, 111, 0.35);
+      --focus: rgba(30, 127, 111, 0.3);
+      --hint: rgba(31, 42, 36, 0.45);
+      --progress-track: rgba(31, 42, 36, 0.12);
+      --note: rgba(31, 42, 36, 0.6);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-sand: #0f1614;
+        --bg-mint: #102321;
+        --bg-sky: #0b1116;
+        --ink: #f1f5f2;
+        --ink-soft: #b6c2bc;
+        --accent: #f2a56f;
+        --accent-2: #6ed2c4;
+        --card: rgba(13, 20, 20, 0.86);
+        --border: rgba(241, 245, 242, 0.12);
+        --shadow: 0 28px 70px rgba(0, 0, 0, 0.6);
+        --glow-1: rgba(242, 165, 111, 0.16);
+        --glow-2: rgba(110, 210, 196, 0.18);
+        --orb-1: #7a4e39;
+        --orb-2: #2e645b;
+        --button-bg: rgba(12, 20, 19, 0.9);
+        --button-border: rgba(241, 245, 242, 0.18);
+        --accent-soft: rgba(242, 165, 111, 0.2);
+        --accent-border: rgba(242, 165, 111, 0.5);
+        --pos-bg: rgba(110, 210, 196, 0.14);
+        --pos-border: rgba(110, 210, 196, 0.4);
+        --focus: rgba(110, 210, 196, 0.35);
+        --hint: rgba(241, 245, 242, 0.45);
+        --progress-track: rgba(241, 245, 242, 0.16);
+        --note: rgba(241, 245, 242, 0.6);
+      }
     }
 
     * {
@@ -29,8 +72,8 @@
       display: grid;
       place-items: center;
       background:
-        radial-gradient(1200px 400px at 10% 15%, rgba(229, 106, 84, 0.15), transparent 60%),
-        radial-gradient(800px 500px at 90% 10%, rgba(30, 127, 111, 0.18), transparent 65%),
+        radial-gradient(1200px 400px at 10% 15%, var(--glow-1), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, var(--glow-2), transparent 65%),
         linear-gradient(150deg, var(--bg-sand) 0%, var(--bg-mint) 50%, var(--bg-sky) 100%);
       color: var(--ink);
       font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", "Helvetica Neue", sans-serif;
@@ -55,14 +98,14 @@
     }
 
     body::before {
-      background: #f4b183;
+      background: var(--orb-1);
       top: -80px;
       left: -60px;
       animation-delay: -3s;
     }
 
     body::after {
-      background: #7fc5b3;
+      background: var(--orb-2);
       bottom: -90px;
       right: -50px;
       animation-delay: -7s;
@@ -116,7 +159,7 @@
     }
 
     .card:focus-within {
-      outline: 2px solid rgba(30, 127, 111, 0.3);
+      outline: 2px solid var(--focus);
       outline-offset: 4px;
     }
 
@@ -152,8 +195,8 @@
       align-items: center;
       padding: 2px 10px;
       border-radius: 999px;
-      background: rgba(30, 127, 111, 0.14);
-      border: 1px solid rgba(30, 127, 111, 0.35);
+      background: var(--pos-bg);
+      border: 1px solid var(--pos-border);
       color: var(--accent-2);
       font-size: 12px;
       letter-spacing: 0.6px;
@@ -181,7 +224,7 @@
       font-size: 14px;
       text-transform: uppercase;
       letter-spacing: 2.4px;
-      color: rgba(31, 42, 36, 0.45);
+      color: var(--hint);
     }
 
     .meta {
@@ -203,7 +246,7 @@
     .progress-bar {
       width: 120px;
       height: 6px;
-      background: rgba(31, 42, 36, 0.12);
+      background: var(--progress-track);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -225,8 +268,8 @@
     }
 
     button {
-      border: 1px solid rgba(31, 42, 36, 0.2);
-      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
       color: var(--ink);
       padding: 10px 16px;
       border-radius: 999px;
@@ -242,8 +285,8 @@
     }
 
     button.primary {
-      border-color: rgba(229, 106, 84, 0.6);
-      background: rgba(229, 106, 84, 0.12);
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
     }
 
     button:disabled {
@@ -260,7 +303,7 @@
 
     .footer-note {
       font-size: 12px;
-      color: rgba(31, 42, 36, 0.6);
+      color: var(--note);
     }
 
     @keyframes rise {
