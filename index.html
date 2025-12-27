@@ -31,6 +31,8 @@
       --hint: rgba(31, 42, 36, 0.45);
       --progress-track: rgba(31, 42, 36, 0.12);
       --note: rgba(31, 42, 36, 0.6);
+      --pronounce-bg: linear-gradient(120deg, rgba(229, 106, 84, 0.16), rgba(30, 127, 111, 0.12));
+      --pronounce-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -59,6 +61,8 @@
         --hint: rgba(241, 245, 242, 0.45);
         --progress-track: rgba(241, 245, 242, 0.16);
         --note: rgba(241, 245, 242, 0.6);
+        --pronounce-bg: linear-gradient(120deg, rgba(242, 165, 111, 0.18), rgba(110, 210, 196, 0.16));
+        --pronounce-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
       }
     }
 
@@ -154,6 +158,7 @@
 
     .card.no-anim .meaning,
     .card.no-anim .phrases,
+    .card.no-anim .pronounce,
     .card.no-anim .progress-bar span {
       transition: none !important;
     }
@@ -168,6 +173,14 @@
       font-size: clamp(34px, 6vw, 56px);
       margin: 0;
       letter-spacing: 1px;
+    }
+
+    .term-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
     .meaning {
@@ -218,6 +231,38 @@
     .phrases.is-hidden {
       opacity: 0;
       transform: translateY(8px);
+    }
+
+    .pronounce {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--pronounce-bg);
+      box-shadow: var(--pronounce-shadow);
+      opacity: 1;
+      transform: translateY(0px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .pronounce.is-hidden {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .pronounce-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .pronounce-value {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 13px;
     }
 
     .hint {
@@ -337,6 +382,12 @@
       }
     }
 
+    @media (max-width: 720px) {
+      .term-row {
+        align-items: flex-start;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -354,7 +405,13 @@
 
     <section class="card" aria-live="polite">
       <div class="hint" id="hint">Press Space to reveal meaning</div>
-      <h2 class="term" id="term">Loading...</h2>
+      <div class="term-row">
+        <h2 class="term" id="term">Loading...</h2>
+        <div class="pronounce is-hidden" id="pronounce">
+          <!-- <div class="pronounce-label">Respell</div> -->
+          <div class="pronounce-value" id="respell">[FOH-toh]</div>
+        </div>
+      </div>
       <p class="meaning is-hidden" id="meaning">
         <span class="pos-tag" id="posTag">v.</span>
         <span id="meaningText">Meaning</span>
@@ -383,30 +440,30 @@
 
   <script>
     const baseDeck = [
-      { term: "Vacant", pos: "adj.", meaning: "empty; not occupied", meaningZh: "空的；未被占用", phrases: ["vacant seat", "vacant position"] },
-      { term: "Proximity", pos: "n.", meaning: "the state of being near; closeness", meaningZh: "接近；邻近", phrases: ["close proximity", "in proximity to"] },
-      { term: "Devise", pos: "v.", meaning: "to plan or invent something carefully", meaningZh: "设计；制定；想出", phrases: ["devise a plan", "devise a strategy"] },
-      { term: "Mundane", pos: "adj.", meaning: "ordinary and not interesting", meaningZh: "平凡的；乏味的", phrases: ["mundane tasks", "mundane routine"] },
-      { term: "Translucent", pos: "adj.", meaning: "allowing some light to pass through; semi-transparent", meaningZh: "半透明的", phrases: ["translucent glass", "translucent curtain"] },
-      { term: "Probe", pos: "v.", meaning: "to investigate or examine closely", meaningZh: "调查；探查", phrases: ["probe the issue", "probe deeper"] },
-      { term: "Revive", pos: "v.", meaning: "to bring back to life or make active again", meaningZh: "复苏；恢复；使复活", phrases: ["revive interest", "revive the economy"] },
-      { term: "Inhabit", pos: "v.", meaning: "to live in a place", meaningZh: "居住于；栖息于", phrases: ["inhabit the island", "inhabit the region"] },
-      { term: "Credibility", pos: "n.", meaning: "the quality of being believable or trustworthy", meaningZh: "可信度；可信性", phrases: ["lose credibility", "credibility gap"] },
-      { term: "Lucid", pos: "adj.", meaning: "clear and easy to understand", meaningZh: "清晰的；易懂的", phrases: ["lucid explanation", "lucid moment"] },
-      { term: "Fatigue", pos: "n.", meaning: "extreme tiredness after long effort", meaningZh: "疲劳；疲惫", phrases: ["mental fatigue", "fatigue sets in"] },
-      { term: "Impulse", pos: "n.", meaning: "a sudden urge to do something without thinking", meaningZh: "冲动", phrases: ["on impulse", "impulse purchase"] },
-      { term: "Recede", pos: "v.", meaning: "to move back; to gradually become smaller or weaker", meaningZh: "后退；逐渐减弱", phrases: ["recede into the distance", "pain recedes"] },
-      { term: "Distorted", pos: "adj.", meaning: "changed in shape or meaning; twisted or unclear", meaningZh: "扭曲的；失真的", phrases: ["distorted view", "distorted sound"] },
-      { term: "Deception", pos: "n.", meaning: "the act of tricking someone by lying or hiding the truth", meaningZh: "欺骗；欺诈", phrases: ["act of deception", "deception tactics"] },
-      { term: "Prosperous", pos: "adj.", meaning: "successful, wealthy, or doing well", meaningZh: "繁荣的；富裕的", phrases: ["prosperous economy", "prosperous times"] },
-      { term: "Elusive", pos: "adj.", meaning: "difficult to find, catch, or understand", meaningZh: "难以捉摸的；难以找到的", phrases: ["elusive target", "elusive answer"] },
-      { term: "Bloated", pos: "adj.", meaning: "swollen; or made too big with unnecessary parts", meaningZh: "肿胀的；膨胀的", phrases: ["bloated budget", "bloated stomach"] },
-      { term: "Contempt", pos: "n.", meaning: "strong disrespect; the feeling that someone is beneath you", meaningZh: "轻蔑；蔑视", phrases: ["feel contempt", "open contempt"] },
-      { term: "Centennial", pos: "adj.", meaning: "relating to the 100th anniversary of something", meaningZh: "百年纪念的", phrases: ["centennial celebration", "centennial anniversary"] },
-      { term: "Atrocity", pos: "n.", meaning: "an extremely cruel or brutal act", meaningZh: "暴行；残暴行为", phrases: ["commit an atrocity", "war atrocity"] },
-      { term: "Phantoms", pos: "n. pl.", meaning: "ghosts; shadowy figures (real or imagined)", meaningZh: "幻影；幽灵", phrases: ["phantom pains", "phantom sounds"] },
-      { term: "Negligence", pos: "n.", meaning: "failure to take proper care; carelessness", meaningZh: "疏忽；过失", phrases: ["gross negligence", "negligence claim"] },
-      { term: "Complicity", pos: "n.", meaning: "involvement in a wrongful act, especially by helping or allowing it", meaningZh: "共谋；同谋", phrases: ["complicity in a crime", "silent complicity"] }
+      { term: "Vacant", syllables: "Va·cant", respell: "[VAY-kunt]", pos: "adj.", meaning: "empty; not occupied", meaningZh: "空的；未被占用", phrases: ["vacant seat", "vacant position"] },
+      { term: "Proximity", syllables: "Prox·im·i·ty", respell: "[prok-SIM-ih-tee]", pos: "n.", meaning: "the state of being near; closeness", meaningZh: "接近；邻近", phrases: ["close proximity", "in proximity to"] },
+      { term: "Devise", syllables: "De·vise", respell: "[dih-VYZE]", pos: "v.", meaning: "to plan or invent something carefully", meaningZh: "设计；制定；想出", phrases: ["devise a plan", "devise a strategy"] },
+      { term: "Mundane", syllables: "Mun·dane", respell: "[mun-DAYN]", pos: "adj.", meaning: "ordinary and not interesting", meaningZh: "平凡的；乏味的", phrases: ["mundane tasks", "mundane routine"] },
+      { term: "Translucent", syllables: "Trans·lu·cent", respell: "[trans-LOO-sent]", pos: "adj.", meaning: "allowing some light to pass through; semi-transparent", meaningZh: "半透明的", phrases: ["translucent glass", "translucent curtain"] },
+      { term: "Probe", syllables: "Probe", respell: "[PROHB]", pos: "v.", meaning: "to investigate or examine closely", meaningZh: "调查；探查", phrases: ["probe the issue", "probe deeper"] },
+      { term: "Revive", syllables: "Re·vive", respell: "[rih-VYV]", pos: "v.", meaning: "to bring back to life or make active again", meaningZh: "复苏；恢复；使复活", phrases: ["revive interest", "revive the economy"] },
+      { term: "Inhabit", syllables: "In·hab·it", respell: "[in-HAB-it]", pos: "v.", meaning: "to live in a place", meaningZh: "居住于；栖息于", phrases: ["inhabit the island", "inhabit the region"] },
+      { term: "Credibility", syllables: "Cred·i·bil·i·ty", respell: "[kred-uh-BIL-ih-tee]", pos: "n.", meaning: "the quality of being believable or trustworthy", meaningZh: "可信度；可信性", phrases: ["lose credibility", "credibility gap"] },
+      { term: "Lucid", syllables: "Lu·cid", respell: "[LOO-sid]", pos: "adj.", meaning: "clear and easy to understand", meaningZh: "清晰的；易懂的", phrases: ["lucid explanation", "lucid moment"] },
+      { term: "Fatigue", syllables: "Fa·tigue", respell: "[fuh-TEEG]", pos: "n.", meaning: "extreme tiredness after long effort", meaningZh: "疲劳；疲惫", phrases: ["mental fatigue", "fatigue sets in"] },
+      { term: "Impulse", syllables: "Im·pulse", respell: "[IM-puls]", pos: "n.", meaning: "a sudden urge to do something without thinking", meaningZh: "冲动", phrases: ["on impulse", "impulse purchase"] },
+      { term: "Recede", syllables: "Re·cede", respell: "[rih-SEED]", pos: "v.", meaning: "to move back; to gradually become smaller or weaker", meaningZh: "后退；逐渐减弱", phrases: ["recede into the distance", "pain recedes"] },
+      { term: "Distorted", syllables: "Dis·tort·ed", respell: "[dis-TOR-tid]", pos: "adj.", meaning: "changed in shape or meaning; twisted or unclear", meaningZh: "扭曲的；失真的", phrases: ["distorted view", "distorted sound"] },
+      { term: "Deception", syllables: "De·cep·tion", respell: "[dih-SEP-shun]", pos: "n.", meaning: "the act of tricking someone by lying or hiding the truth", meaningZh: "欺骗；欺诈", phrases: ["act of deception", "deception tactics"] },
+      { term: "Prosperous", syllables: "Pros·per·ous", respell: "[PROS-per-us]", pos: "adj.", meaning: "successful, wealthy, or doing well", meaningZh: "繁荣的；富裕的", phrases: ["prosperous economy", "prosperous times"] },
+      { term: "Elusive", syllables: "E·lu·sive", respell: "[ih-LOO-siv]", pos: "adj.", meaning: "difficult to find, catch, or understand", meaningZh: "难以捉摸的；难以找到的", phrases: ["elusive target", "elusive answer"] },
+      { term: "Bloated", syllables: "Blo·at·ed", respell: "[BLOH-tid]", pos: "adj.", meaning: "swollen; or made too big with unnecessary parts", meaningZh: "肿胀的；膨胀的", phrases: ["bloated budget", "bloated stomach"] },
+      { term: "Contempt", syllables: "Con·tempt", respell: "[kun-TEMPT]", pos: "n.", meaning: "strong disrespect; the feeling that someone is beneath you", meaningZh: "轻蔑；蔑视", phrases: ["feel contempt", "open contempt"] },
+      { term: "Centennial", syllables: "Cen·ten·ni·al", respell: "[sen-TEN-ee-uhl]", pos: "adj.", meaning: "relating to the 100th anniversary of something", meaningZh: "百年纪念的", phrases: ["centennial celebration", "centennial anniversary"] },
+      { term: "Atrocity", syllables: "A·troc·i·ty", respell: "[uh-TROS-ih-tee]", pos: "n.", meaning: "an extremely cruel or brutal act", meaningZh: "暴行；残暴行为", phrases: ["commit an atrocity", "war atrocity"] },
+      { term: "Phantoms", syllables: "Phan·toms", respell: "[FAN-tumz]", pos: "n. pl.", meaning: "ghosts; shadowy figures (real or imagined)", meaningZh: "幻影；幽灵", phrases: ["phantom pains", "phantom sounds"] },
+      { term: "Negligence", syllables: "Neg·li·gence", respell: "[NEG-lih-jens]", pos: "n.", meaning: "failure to take proper care; carelessness", meaningZh: "疏忽；过失", phrases: ["gross negligence", "negligence claim"] },
+      { term: "Complicity", syllables: "Com·plic·i·ty", respell: "[kum-PLIS-ih-tee]", pos: "n.", meaning: "involvement in a wrongful act, especially by helping or allowing it", meaningZh: "共谋；同谋", phrases: ["complicity in a crime", "silent complicity"] }
     ];
 
     let deck = baseDeck.map((item) => ({ ...item }));
@@ -416,6 +473,8 @@
     const posTagEl = document.getElementById("posTag");
     const meaningTextEl = document.getElementById("meaningText");
     const phrasesEl = document.getElementById("phrases");
+    const pronounceEl = document.getElementById("pronounce");
+    const respellEl = document.getElementById("respell");
     const hintEl = document.getElementById("hint");
     const countEl = document.getElementById("count");
     const progressEl = document.getElementById("progress");
@@ -448,6 +507,8 @@
         meaningEl.classList.add("is-hidden");
         phrasesEl.innerHTML = "";
         phrasesEl.classList.add("is-hidden");
+        respellEl.textContent = "";
+        pronounceEl.classList.add("is-hidden");
         hintEl.textContent = "Deck empty. Press Reset to reload.";
         countEl.textContent = "0 / 0";
         progressEl.style.transform = "scaleX(0)";
@@ -455,13 +516,15 @@
       }
 
       const item = deck[index];
-      termEl.textContent = item.term;
+      termEl.textContent = revealed ? (item.syllables || item.term) : item.term;
       posTagEl.textContent = item.pos || "";
       posTagEl.style.display = item.pos ? "inline-flex" : "none";
       meaningTextEl.textContent = `${item.meaning} / ${item.meaningZh}`;
       meaningEl.classList.toggle("is-hidden", !revealed);
       phrasesEl.innerHTML = item.phrases.map((phrase) => `<li>${phrase}</li>`).join("");
       phrasesEl.classList.toggle("is-hidden", !revealed);
+      respellEl.textContent = item.respell || "";
+      pronounceEl.classList.toggle("is-hidden", !revealed);
       hintEl.textContent = revealed
         ? "Enter for next, Space hides, Tab/<- for previous, Delete removes"
         : "Enter or Space reveals meaning + phrases";
