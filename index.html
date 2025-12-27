@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vocabulary Loop</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg-sand: #f6ead4;
+      --bg-mint: #d9f2e7;
+      --bg-sky: #cfe3f4;
+      --ink: #1f2a24;
+      --ink-soft: #51615b;
+      --accent: #e56a54;
+      --accent-2: #1e7f6f;
+      --card: rgba(255, 255, 255, 0.7);
+      --border: rgba(31, 42, 36, 0.14);
+      --shadow: 0 24px 60px rgba(31, 42, 36, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(1200px 400px at 10% 15%, rgba(229, 106, 84, 0.15), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, rgba(30, 127, 111, 0.18), transparent 65%),
+        linear-gradient(150deg, var(--bg-sand) 0%, var(--bg-mint) 50%, var(--bg-sky) 100%);
+      color: var(--ink);
+      font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", "Helvetica Neue", sans-serif;
+      letter-spacing: 0.2px;
+      padding: 32px 20px 40px;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(0px);
+      opacity: 0.22;
+      z-index: 0;
+      pointer-events: none;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      background: #f4b183;
+      top: -80px;
+      left: -60px;
+      animation-delay: -3s;
+    }
+
+    body::after {
+      background: #7fc5b3;
+      bottom: -90px;
+      right: -50px;
+      animation-delay: -7s;
+    }
+
+    .shell {
+      width: min(880px, 100%);
+      display: grid;
+      gap: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
+      font-weight: 600;
+      font-size: clamp(28px, 4vw, 40px);
+    }
+
+    .subhead {
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: clamp(28px, 6vw, 46px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      min-height: 320px;
+      display: grid;
+      gap: 18px;
+      align-content: center;
+      animation: rise 0.7s ease;
+      cursor: pointer;
+    }
+
+    .card.no-anim .meaning,
+    .card.no-anim .phrases,
+    .card.no-anim .progress-bar span {
+      transition: none !important;
+    }
+
+    .card:focus-within {
+      outline: 2px solid rgba(30, 127, 111, 0.3);
+      outline-offset: 4px;
+    }
+
+    .term {
+      font-family: "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
+      font-size: clamp(34px, 6vw, 56px);
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .meaning {
+      font-size: clamp(18px, 2.6vw, 22px);
+      line-height: 1.6;
+      margin: 0;
+      color: var(--ink-soft);
+      opacity: 1;
+      transform: translateY(0px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      min-height: 2.2em;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .meaning.is-hidden {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .pos-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(30, 127, 111, 0.14);
+      border: 1px solid rgba(30, 127, 111, 0.35);
+      color: var(--accent-2);
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      font-weight: 600;
+    }
+
+    .phrases {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      gap: 6px;
+      font-size: 15px;
+      color: var(--ink);
+      opacity: 1;
+      transform: translateY(0px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .phrases.is-hidden {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .hint {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2.4px;
+      color: rgba(31, 42, 36, 0.45);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+
+    .progress-bar {
+      width: 120px;
+      height: 6px;
+      background: rgba(31, 42, 36, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    button {
+      border: 1px solid rgba(31, 42, 36, 0.2);
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--ink);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(31, 42, 36, 0.12);
+    }
+
+    button.primary {
+      border-color: rgba(229, 106, 84, 0.6);
+      background: rgba(229, 106, 84, 0.12);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .loop {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: rgba(31, 42, 36, 0.6);
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      100% {
+        transform: translate3d(20px, -18px, 0) scale(1.08);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .progress-bar {
+        width: 160px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <h1>Vocabulary Loop</h1>
+      <div class="subhead">Flashcard flow: Enter reveals, Enter again goes next. Space hides or reveals. Tab or &lt;- goes previous. Delete removes. Tap the card if you are on mobile.</div>
+    </header>
+
+    <section class="card" aria-live="polite">
+      <div class="hint" id="hint">Press Space to reveal meaning</div>
+      <h2 class="term" id="term">Loading...</h2>
+      <p class="meaning is-hidden" id="meaning">
+        <span class="pos-tag" id="posTag">v.</span>
+        <span id="meaningText">Meaning</span>
+      </p>
+      <ul class="phrases is-hidden" id="phrases" aria-label="Common phrases"></ul>
+    </section>
+
+    <section class="meta">
+      <div class="progress">
+        <div class="progress-bar"><span id="progress"></span></div>
+        <div class="count" id="count">0 / 0</div>
+      </div>
+      <div class="controls">
+        <button class="primary" id="revealButton" type="button">Reveal/Hide (Space)</button>
+        <button id="prevButton" type="button">Prev (Tab / &lt;-)</button>
+        <button id="nextButton" type="button">Next (Enter)</button>
+        <button id="removeButton" type="button">Remove (Delete)</button>
+        <button id="undoButton" type="button" disabled>Undo Remove</button>
+        <button id="resetButton" type="button">Reset Deck</button>
+      </div>
+      <div class="loop">Looping deck: on</div>
+    </section>
+
+    <div class="footer-note">No limits — keep cycling as long as you want.</div>
+  </main>
+
+  <script>
+    const baseDeck = [
+      { term: "Vacant", pos: "adj.", meaning: "empty; not occupied", meaningZh: "空的；未被占用", phrases: ["vacant seat", "vacant position"] },
+      { term: "Proximity", pos: "n.", meaning: "the state of being near; closeness", meaningZh: "接近；邻近", phrases: ["close proximity", "in proximity to"] },
+      { term: "Devise", pos: "v.", meaning: "to plan or invent something carefully", meaningZh: "设计；制定；想出", phrases: ["devise a plan", "devise a strategy"] },
+      { term: "Mundane", pos: "adj.", meaning: "ordinary and not interesting", meaningZh: "平凡的；乏味的", phrases: ["mundane tasks", "mundane routine"] },
+      { term: "Translucent", pos: "adj.", meaning: "allowing some light to pass through; semi-transparent", meaningZh: "半透明的", phrases: ["translucent glass", "translucent curtain"] },
+      { term: "Probe", pos: "v.", meaning: "to investigate or examine closely", meaningZh: "调查；探查", phrases: ["probe the issue", "probe deeper"] },
+      { term: "Revive", pos: "v.", meaning: "to bring back to life or make active again", meaningZh: "复苏；恢复；使复活", phrases: ["revive interest", "revive the economy"] },
+      { term: "Inhabit", pos: "v.", meaning: "to live in a place", meaningZh: "居住于；栖息于", phrases: ["inhabit the island", "inhabit the region"] },
+      { term: "Credibility", pos: "n.", meaning: "the quality of being believable or trustworthy", meaningZh: "可信度；可信性", phrases: ["lose credibility", "credibility gap"] },
+      { term: "Lucid", pos: "adj.", meaning: "clear and easy to understand", meaningZh: "清晰的；易懂的", phrases: ["lucid explanation", "lucid moment"] },
+      { term: "Fatigue", pos: "n.", meaning: "extreme tiredness after long effort", meaningZh: "疲劳；疲惫", phrases: ["mental fatigue", "fatigue sets in"] },
+      { term: "Impulse", pos: "n.", meaning: "a sudden urge to do something without thinking", meaningZh: "冲动", phrases: ["on impulse", "impulse purchase"] },
+      { term: "Recede", pos: "v.", meaning: "to move back; to gradually become smaller or weaker", meaningZh: "后退；逐渐减弱", phrases: ["recede into the distance", "pain recedes"] },
+      { term: "Distorted", pos: "adj.", meaning: "changed in shape or meaning; twisted or unclear", meaningZh: "扭曲的；失真的", phrases: ["distorted view", "distorted sound"] },
+      { term: "Deception", pos: "n.", meaning: "the act of tricking someone by lying or hiding the truth", meaningZh: "欺骗；欺诈", phrases: ["act of deception", "deception tactics"] },
+      { term: "Prosperous", pos: "adj.", meaning: "successful, wealthy, or doing well", meaningZh: "繁荣的；富裕的", phrases: ["prosperous economy", "prosperous times"] },
+      { term: "Elusive", pos: "adj.", meaning: "difficult to find, catch, or understand", meaningZh: "难以捉摸的；难以找到的", phrases: ["elusive target", "elusive answer"] },
+      { term: "Bloated", pos: "adj.", meaning: "swollen; or made too big with unnecessary parts", meaningZh: "肿胀的；膨胀的", phrases: ["bloated budget", "bloated stomach"] },
+      { term: "Contempt", pos: "n.", meaning: "strong disrespect; the feeling that someone is beneath you", meaningZh: "轻蔑；蔑视", phrases: ["feel contempt", "open contempt"] },
+      { term: "Centennial", pos: "adj.", meaning: "relating to the 100th anniversary of something", meaningZh: "百年纪念的", phrases: ["centennial celebration", "centennial anniversary"] },
+      { term: "Atrocity", pos: "n.", meaning: "an extremely cruel or brutal act", meaningZh: "暴行；残暴行为", phrases: ["commit an atrocity", "war atrocity"] },
+      { term: "Phantoms", pos: "n. pl.", meaning: "ghosts; shadowy figures (real or imagined)", meaningZh: "幻影；幽灵", phrases: ["phantom pains", "phantom sounds"] },
+      { term: "Negligence", pos: "n.", meaning: "failure to take proper care; carelessness", meaningZh: "疏忽；过失", phrases: ["gross negligence", "negligence claim"] },
+      { term: "Complicity", pos: "n.", meaning: "involvement in a wrongful act, especially by helping or allowing it", meaningZh: "共谋；同谋", phrases: ["complicity in a crime", "silent complicity"] }
+    ];
+
+    let deck = baseDeck.map((item) => ({ ...item }));
+
+    const termEl = document.getElementById("term");
+    const meaningEl = document.getElementById("meaning");
+    const posTagEl = document.getElementById("posTag");
+    const meaningTextEl = document.getElementById("meaningText");
+    const phrasesEl = document.getElementById("phrases");
+    const hintEl = document.getElementById("hint");
+    const countEl = document.getElementById("count");
+    const progressEl = document.getElementById("progress");
+    const revealButton = document.getElementById("revealButton");
+    const prevButton = document.getElementById("prevButton");
+    const nextButton = document.getElementById("nextButton");
+    const removeButton = document.getElementById("removeButton");
+    const undoButton = document.getElementById("undoButton");
+    const resetButton = document.getElementById("resetButton");
+    const card = document.querySelector(".card");
+
+    let index = 0;
+    let revealed = false;
+    let lastRemoved = null;
+
+    function renderInstantly(action) {
+      card.classList.add("no-anim");
+      action();
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          card.classList.remove("no-anim");
+        });
+      });
+    }
+
+    function render() {
+      if (!deck.length) {
+        termEl.textContent = "No words loaded";
+        meaningEl.textContent = "";
+        meaningEl.classList.add("is-hidden");
+        phrasesEl.innerHTML = "";
+        phrasesEl.classList.add("is-hidden");
+        hintEl.textContent = "Deck empty. Press Reset to reload.";
+        countEl.textContent = "0 / 0";
+        progressEl.style.transform = "scaleX(0)";
+        return;
+      }
+
+      const item = deck[index];
+      termEl.textContent = item.term;
+      posTagEl.textContent = item.pos || "";
+      posTagEl.style.display = item.pos ? "inline-flex" : "none";
+      meaningTextEl.textContent = `${item.meaning} / ${item.meaningZh}`;
+      meaningEl.classList.toggle("is-hidden", !revealed);
+      phrasesEl.innerHTML = item.phrases.map((phrase) => `<li>${phrase}</li>`).join("");
+      phrasesEl.classList.toggle("is-hidden", !revealed);
+      hintEl.textContent = revealed
+        ? "Enter for next, Space hides, Tab/<- for previous, Delete removes"
+        : "Enter or Space reveals meaning + phrases";
+      revealButton.textContent = revealed ? "Hide (Space)" : "Reveal (Space)";
+      undoButton.disabled = !lastRemoved;
+
+      countEl.textContent = `${index + 1} / ${deck.length}`;
+      const progress = (index + 1) / deck.length;
+      progressEl.style.transform = `scaleX(${progress})`;
+    }
+
+    function nextCard() {
+      if (!deck.length) return;
+      renderInstantly(() => {
+        index = (index + 1) % deck.length;
+        revealed = false;
+        render();
+      });
+    }
+
+    function prevCard() {
+      if (!deck.length) return;
+      renderInstantly(() => {
+        index = (index - 1 + deck.length) % deck.length;
+        revealed = false;
+        render();
+      });
+    }
+
+    function removeCard() {
+      if (!deck.length) return;
+      renderInstantly(() => {
+        const removedIndex = index;
+        const [removed] = deck.splice(index, 1);
+        lastRemoved = { item: removed, index: removedIndex };
+        if (index >= deck.length) {
+          index = 0;
+        }
+        revealed = false;
+        render();
+      });
+    }
+
+    function undoRemove() {
+      if (!lastRemoved) return;
+      renderInstantly(() => {
+        const insertIndex = Math.min(lastRemoved.index, deck.length);
+        deck.splice(insertIndex, 0, lastRemoved.item);
+        index = insertIndex;
+        lastRemoved = null;
+        revealed = false;
+        render();
+      });
+    }
+
+    function resetDeck() {
+      renderInstantly(() => {
+        deck = baseDeck.map((item) => ({ ...item }));
+        index = 0;
+        revealed = false;
+        lastRemoved = null;
+        render();
+      });
+    }
+
+    function toggleReveal() {
+      if (!deck.length) return;
+      revealed = !revealed;
+      render();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.code === "Space") {
+        event.preventDefault();
+        toggleReveal();
+      } else if (event.code === "Tab") {
+        event.preventDefault();
+        prevCard();
+      } else if (event.code === "Enter") {
+        event.preventDefault();
+        if (revealed) {
+          nextCard();
+        } else {
+          toggleReveal();
+        }
+      } else if (event.code === "ArrowLeft") {
+        event.preventDefault();
+        prevCard();
+      } else if (event.code === "Delete" || event.code === "Backspace") {
+        event.preventDefault();
+        removeCard();
+      }
+    });
+
+    card.addEventListener("click", () => {
+      toggleReveal();
+    });
+
+    revealButton.addEventListener("click", toggleReveal);
+    prevButton.addEventListener("click", prevCard);
+    nextButton.addEventListener("click", nextCard);
+    removeButton.addEventListener("click", removeCard);
+    undoButton.addEventListener("click", undoRemove);
+    resetButton.addEventListener("click", resetDeck);
+
+    render();
+  </script>
+</body>
+</html>
