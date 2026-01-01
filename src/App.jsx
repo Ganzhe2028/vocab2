@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const baseDeck = [
   {
@@ -228,6 +228,36 @@ export default function App() {
   const [revealed, setRevealed] = useState(false);
   const [lastRemoved, setLastRemoved] = useState(null);
   const [noAnim, setNoAnim] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
+  const [importMessage, setImportMessage] = useState("");
+  const fileInputRef = useRef(null);
+  const guidePanelRef = useRef(null);
+
+  const promptText = `你是英语词汇整理助手。请把用户提供的单词逐个补全为以下字段，并输出为可导入的 JSON 数组：
+
+字段要求（严格遵守）：
+- term: 单词，首字母大写
+- syllables: 分节写法（用中点分隔）
+- respell: 发音重拼（用方括号包裹）
+- pos: 词性缩写（如 "n.", "v.", "adj.", "adv."）
+- meaning: 英文简明释义
+- meaningZh: 中文释义
+- phrases: 常用搭配短语数组（2-3 个）
+
+输出格式示例（仅 JSON，不要多余文字）：
+[
+  {
+    "term": "Example",
+    "syllables": "Ex·am·ple",
+    "respell": "[ig-ZAM-puhl]",
+    "pos": "n.",
+    "meaning": "a thing that illustrates a rule",
+    "meaningZh": "例子；示例",
+    "phrases": ["for example", "example sentence"]
+  }
+]
+
+完成后提醒用户上传 JSON 文件以导入。`;
 
   const runInstantly = useCallback((action) => {
     setNoAnim(true);
@@ -304,8 +334,76 @@ export default function App() {
     });
   }, [runInstantly]);
 
+  const handleImportClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImportFile = useCallback(
+    async (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      try {
+        const rawText = await file.text();
+        const parsed = JSON.parse(rawText);
+        const importedDeck = Array.isArray(parsed)
+          ? parsed
+          : Array.isArray(parsed?.deck)
+            ? parsed.deck
+            : null;
+        if (!importedDeck || !importedDeck.length) {
+          throw new Error("无法识别 JSON 格式。");
+        }
+        const normalized = importedDeck
+          .map((entry) => ({
+            term: String(entry.term ?? "").trim(),
+            syllables: String(entry.syllables ?? "").trim(),
+            respell: String(entry.respell ?? "").trim(),
+            pos: String(entry.pos ?? "").trim(),
+            meaning: String(entry.meaning ?? "").trim(),
+            meaningZh: String(entry.meaningZh ?? "").trim(),
+            phrases: Array.isArray(entry.phrases)
+              ? entry.phrases.map((phrase) => String(phrase).trim()).filter(Boolean)
+              : [],
+          }))
+          .filter((entry) => entry.term);
+        if (!normalized.length) {
+          throw new Error("JSON 中没有有效的单词。");
+        }
+        runInstantly(() => {
+          setDeck(normalized);
+          setIndex(0);
+          setRevealed(false);
+          setLastRemoved(null);
+        });
+        setImportMessage(`已导入 ${normalized.length} 个单词。`);
+      } catch (error) {
+        setImportMessage(`导入失败：${error.message}`);
+      } finally {
+        event.target.value = "";
+      }
+    },
+    [runInstantly]
+  );
+
+  const handleCopyPrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(promptText);
+      setImportMessage("提示词已复制到剪贴板。");
+    } catch (error) {
+      setImportMessage("复制失败，请手动复制提示词。");
+    }
+  };
+
   useEffect(() => {
     const handleKeydown = (event) => {
+      if (guideOpen) {
+        return;
+      }
+      if (guidePanelRef.current?.contains(document.activeElement)) {
+        return;
+      }
       if (event.code === "Space") {
         event.preventDefault();
         toggleReveal();
@@ -332,7 +430,7 @@ export default function App() {
     return () => {
       document.removeEventListener("keydown", handleKeydown);
     };
-  }, [nextCard, prevCard, removeCard, revealed, toggleReveal]);
+  }, [guideOpen, nextCard, prevCard, removeCard, revealed, toggleReveal]);
 
   const hasDeck = deck.length > 0;
   const item = hasDeck ? deck[index] : null;
@@ -360,13 +458,62 @@ export default function App() {
   return (
     <main className="shell">
       <header>
-        <h1>Vocabulary Loop</h1>
+        <div className="title-row">
+          <h1>Vocabulary Loop</h1>
+          <div className="header-actions">
+            <button type="button" onClick={handleImportClick}>
+              导入
+            </button>
+            <button type="button" onClick={() => setGuideOpen(true)}>
+              指南
+            </button>
+          </div>
+        </div>
         <div className="subhead">
           Flashcard flow: Enter reveals, Enter again goes next. Space hides or
           reveals. Tab or &lt;- goes previous. Delete removes. Tap the card if
           you are on mobile.
         </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="application/json"
+          onChange={handleImportFile}
+          className="file-input"
+        />
+        {importMessage ? <div className="import-message">{importMessage}</div> : null}
       </header>
+
+      {guideOpen ? (
+        <section
+          className="guide-panel"
+          role="dialog"
+          aria-modal="true"
+          ref={guidePanelRef}
+        >
+          <div className="guide-header">
+            <h2>导入指南</h2>
+            <button type="button" onClick={() => setGuideOpen(false)}>
+              关闭
+            </button>
+          </div>
+          <p>
+            使用下方提示词让 AI 把你的单词整理成可导入的 JSON。完成后保存为
+            .json 文件，再点击页面顶部的“导入”上传。
+          </p>
+          <div className="prompt-box">
+            <pre>{promptText}</pre>
+          </div>
+          <div className="guide-actions">
+            <button className="primary" type="button" onClick={handleCopyPrompt}>
+              复制提示词
+            </button>
+            <button type="button" onClick={handleImportClick}>
+              上传 JSON 文件
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <section className={cardClassName} aria-live="polite" onClick={toggleReveal}>
         <div className="hint">{hint}</div>
