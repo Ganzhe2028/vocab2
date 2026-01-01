@@ -350,8 +350,8 @@ export default function App() {
         const importedDeck = Array.isArray(parsed)
           ? parsed
           : Array.isArray(parsed?.deck)
-            ? parsed.deck
-            : null;
+          ? parsed.deck
+          : null;
         if (!importedDeck || !importedDeck.length) {
           throw new Error("无法识别 JSON 格式。");
         }
@@ -364,7 +364,9 @@ export default function App() {
             meaning: String(entry.meaning ?? "").trim(),
             meaningZh: String(entry.meaningZh ?? "").trim(),
             phrases: Array.isArray(entry.phrases)
-              ? entry.phrases.map((phrase) => String(phrase).trim()).filter(Boolean)
+              ? entry.phrases
+                  .map((phrase) => String(phrase).trim())
+                  .filter(Boolean)
               : [],
           }))
           .filter((entry) => entry.term);
@@ -462,10 +464,10 @@ export default function App() {
           <h1>Vocabulary Loop</h1>
           <div className="header-actions">
             <button type="button" onClick={handleImportClick}>
-              导入
+              Import
             </button>
             <button type="button" onClick={() => setGuideOpen(true)}>
-              指南
+              Guidebook
             </button>
           </div>
         </div>
@@ -481,41 +483,54 @@ export default function App() {
           onChange={handleImportFile}
           className="file-input"
         />
-        {importMessage ? <div className="import-message">{importMessage}</div> : null}
+        {importMessage ? (
+          <div className="import-message">{importMessage}</div>
+        ) : null}
       </header>
 
       {guideOpen ? (
-        <section
-          className="guide-panel"
-          role="dialog"
-          aria-modal="true"
-          ref={guidePanelRef}
-        >
-          <div className="guide-header">
-            <h2>导入指南</h2>
-            <button type="button" onClick={() => setGuideOpen(false)}>
-              关闭
-            </button>
-          </div>
-          <p>
-            使用下方提示词让 AI 把你的单词整理成可导入的 JSON。完成后保存为
-            .json 文件，再点击页面顶部的“导入”上传。
-          </p>
-          <div className="prompt-box">
-            <pre>{promptText}</pre>
-          </div>
-          <div className="guide-actions">
-            <button className="primary" type="button" onClick={handleCopyPrompt}>
-              复制提示词
-            </button>
-            <button type="button" onClick={handleImportClick}>
-              上传 JSON 文件
-            </button>
-          </div>
-        </section>
+        <div className="guide-overlay" onClick={() => setGuideOpen(false)}>
+          <section
+            className="guide-panel"
+            role="dialog"
+            aria-modal="true"
+            ref={guidePanelRef}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="guide-header">
+              <h2>导入指南</h2>
+              <button type="button" onClick={() => setGuideOpen(false)}>
+                关闭
+              </button>
+            </div>
+            <p>
+              使用下方提示词让 AI 把你的单词整理成可导入的 JSON。完成后保存为
+              .json 文件，再点击上传文件即可。
+            </p>
+            <div className="prompt-box">
+              <pre>{promptText}</pre>
+            </div>
+            <div className="guide-actions">
+              <button
+                className="primary"
+                type="button"
+                onClick={handleCopyPrompt}
+              >
+                复制提示词
+              </button>
+              <button type="button" onClick={handleImportClick}>
+                上传 JSON 文件
+              </button>
+            </div>
+          </section>
+        </div>
       ) : null}
 
-      <section className={cardClassName} aria-live="polite" onClick={toggleReveal}>
+      <section
+        className={cardClassName}
+        aria-live="polite"
+        onClick={toggleReveal}
+      >
         <div className="hint">{hint}</div>
         <div className="term-row">
           <h2 className="term">{term}</h2>
@@ -569,7 +584,9 @@ export default function App() {
         <div className="loop">Looping deck: on</div>
       </section>
 
-      <div className="footer-note">No limits — keep cycling as long as you want.</div>
+      <div className="footer-note">
+        No limits — keep cycling as long as you want.
+      </div>
     </main>
   );
 }

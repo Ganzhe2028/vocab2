@@ -187,6 +187,20 @@ h1 {
   box-shadow: var(--shadow);
   display: grid;
   gap: 16px;
+  width: min(760px, 100%);
+  max-height: min(85vh, 720px);
+  overflow: auto;
+}
+
+.guide-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(12, 20, 19, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 10;
 }
 
 .guide-header {
@@ -457,6 +471,10 @@ button:disabled {
 }
 
 @media (max-width: 600px) {
+  .guide-overlay {
+    padding: 16px;
+  }
+
   .meta {
     flex-direction: column;
     align-items: flex-start;
