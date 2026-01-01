@@ -231,6 +231,7 @@ export default function App() {
   const [guideOpen, setGuideOpen] = useState(false);
   const [importMessage, setImportMessage] = useState("");
   const fileInputRef = useRef(null);
+  const guidePanelRef = useRef(null);
 
   const promptText = `你是英语词汇整理助手。请把用户提供的单词逐个补全为以下字段，并输出为可导入的 JSON 数组：
 
@@ -397,6 +398,12 @@ export default function App() {
 
   useEffect(() => {
     const handleKeydown = (event) => {
+      if (guideOpen) {
+        return;
+      }
+      if (guidePanelRef.current?.contains(document.activeElement)) {
+        return;
+      }
       if (event.code === "Space") {
         event.preventDefault();
         toggleReveal();
@@ -423,7 +430,7 @@ export default function App() {
     return () => {
       document.removeEventListener("keydown", handleKeydown);
     };
-  }, [nextCard, prevCard, removeCard, revealed, toggleReveal]);
+  }, [guideOpen, nextCard, prevCard, removeCard, revealed, toggleReveal]);
 
   const hasDeck = deck.length > 0;
   const item = hasDeck ? deck[index] : null;
@@ -478,7 +485,12 @@ export default function App() {
       </header>
 
       {guideOpen ? (
-        <section className="guide-panel" role="dialog" aria-modal="true">
+        <section
+          className="guide-panel"
+          role="dialog"
+          aria-modal="true"
+          ref={guidePanelRef}
+        >
           <div className="guide-header">
             <h2>导入指南</h2>
             <button type="button" onClick={() => setGuideOpen(false)}>
