@@ -135,6 +135,7 @@ body::after {
   gap: 22px;
   position: relative;
   z-index: 1;
+  margin: 0 auto;
 }
 
 header {
@@ -215,12 +216,12 @@ h1 {
   font-size: 20px;
 }
 
-.prompt-box {
+/* .prompt-box {
   background: rgba(0, 0, 0, 0.04);
   border-radius: 16px;
   padding: 16px;
   border: 1px solid var(--border);
-  max-height: 260px;
+  max-height: 100px;
   overflow: auto;
 }
 
@@ -229,12 +230,56 @@ h1 {
   white-space: pre-wrap;
   font-size: 13px;
   color: var(--ink-soft);
-}
+} */
 
 .guide-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+.paste-block {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px dashed var(--border);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.paste-block label {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.paste-textarea {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  resize: vertical;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink);
+  font-family: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 13px;
+}
+
+.paste-textarea:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.paste-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.paste-hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .card {
