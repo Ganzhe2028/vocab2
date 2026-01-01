@@ -229,6 +229,15 @@ Format:
 - Meaning (EN): short, clear definition
 - Sentence: A full sentence that ends with a period.
 
+Examples (format only, do not include these in your output):
+[Anchor]
+- Meaning (EN): a heavy object used to keep a ship in place
+- Sentence: The sailor dropped the anchor before the storm arrived.
+
+[Brisk]
+- Meaning (EN): quick and energetic
+- Sentence: We took a brisk walk after dinner.
+
 Rules:
 - Replace [Word] with the word in Title Case.
 - Keep exactly three lines per entry.
