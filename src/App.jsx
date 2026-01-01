@@ -222,6 +222,18 @@ const baseDeck = [
 
 const MAX_FILE_SIZE = 200 * 1024;
 const MAX_ENTRIES = 500;
+const AI_PROMPT = `You are given a list of English words. For each word, generate a vocabulary entry using the exact format below. Use clear, short English definitions and one natural sentence example per word. Output ONLY the formatted entries, separated by a blank line, and nothing else.
+
+Format:
+[Word]
+- Meaning (EN): short, clear definition
+- Sentence: A full sentence that ends with a period.
+
+Rules:
+- Replace [Word] with the word in Title Case.
+- Keep exactly three lines per entry.
+- Add a blank line between entries.
+- Use ASCII characters unless a word requires otherwise.`;
 
 const cloneDeck = () => baseDeck.map((item) => ({ ...item }));
 
@@ -360,6 +372,9 @@ export default function App() {
   const [uploadMessage, setUploadMessage] = useState("");
   const [previewItems, setPreviewItems] = useState([]);
   const [uploadedFileName, setUploadedFileName] = useState("");
+  const [showImport, setShowImport] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
 
   const runInstantly = useCallback((action) => {
     setNoAnim(true);
@@ -501,6 +516,16 @@ export default function App() {
     [loadDeck]
   );
 
+  const handleCopyPrompt = useCallback(async () => {
+    setCopyStatus("");
+    try {
+      await navigator.clipboard.writeText(AI_PROMPT);
+      setCopyStatus("Prompt copied.");
+    } catch (error) {
+      setCopyStatus("Copy failed. Please copy manually.");
+    }
+  }, []);
+
   useEffect(() => {
     const handleKeydown = (event) => {
       if (event.code === "Space") {
@@ -559,7 +584,17 @@ export default function App() {
   return (
     <main className="shell">
       <header>
-        <h1>Vocabulary Loop</h1>
+        <div className="header-top">
+          <h1>Vocabulary Loop</h1>
+          <div className="header-actions">
+            <button type="button" onClick={() => setShowImport(true)}>
+              Import
+            </button>
+            <button type="button" onClick={() => setShowGuide(true)}>
+              Guide
+            </button>
+          </div>
+        </div>
         <div className="subhead">
           Flashcard flow: Enter reveals, Enter again goes next. Space hides or
           reveals. Tab or &lt;- goes previous. Delete removes. Tap the card if
@@ -567,57 +602,88 @@ export default function App() {
         </div>
       </header>
 
-      <section className="uploader" aria-live="polite">
-        <div className="uploader-header">
-          <h2>Upload a vocab file</h2>
-          <p>
-            Supported formats: Markdown (.md/.txt) with [Word] blocks or JSON
-            arrays. Each entry must include a word, meaning, and sentence.
-          </p>
-        </div>
-        <div className="uploader-controls">
-          <label className="file-input">
-            <span>Select file</span>
-            <input
-              type="file"
-              accept=".md,.txt,.json"
-              onChange={handleFileChange}
-            />
-          </label>
-          <div className="uploader-meta">
-            <span>
-              Max {Math.round(MAX_FILE_SIZE / 1024)}KB • Up to {MAX_ENTRIES}{" "}
-              entries
-            </span>
-            {uploadedFileName ? (
-              <span className="file-name">{uploadedFileName}</span>
+      {showImport ? (
+        <section className="modal" role="dialog" aria-modal="true">
+          <div className="modal-card">
+            <div className="modal-header">
+              <h2>Import vocab file</h2>
+              <button type="button" onClick={() => setShowImport(false)}>
+                Close
+              </button>
+            </div>
+            <p className="modal-subhead">
+              Supported formats: Markdown (.md/.txt) with [Word] blocks or JSON
+              arrays. Each entry must include a word, meaning, and sentence.
+            </p>
+            <div className="uploader-controls">
+              <label className="file-input">
+                <span>Select file</span>
+                <input
+                  type="file"
+                  accept=".md,.txt,.json"
+                  onChange={handleFileChange}
+                />
+              </label>
+              <div className="uploader-meta">
+                <span>
+                  Max {Math.round(MAX_FILE_SIZE / 1024)}KB • Up to {MAX_ENTRIES}{" "}
+                  entries
+                </span>
+                {uploadedFileName ? (
+                  <span className="file-name">{uploadedFileName}</span>
+                ) : null}
+              </div>
+            </div>
+            {uploadMessage ? (
+              <div className="uploader-message">{uploadMessage}</div>
+            ) : null}
+            {uploadErrors.length ? (
+              <ul className="uploader-errors">
+                {uploadErrors.map((error, idx) => (
+                  <li key={`${idx}-${error}`}>{error}</li>
+                ))}
+              </ul>
+            ) : null}
+            {previewItems.length ? (
+              <div className="uploader-preview">
+                <h3>Preview</h3>
+                <ul>
+                  {previewItems.map((entry, idx) => (
+                    <li key={`${entry.term}-${idx}`}>
+                      <strong>{entry.term}</strong>
+                      <span>{entry.meaning}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ) : null}
           </div>
-        </div>
-        {uploadMessage ? (
-          <div className="uploader-message">{uploadMessage}</div>
-        ) : null}
-        {uploadErrors.length ? (
-          <ul className="uploader-errors">
-            {uploadErrors.map((error, idx) => (
-              <li key={`${idx}-${error}`}>{error}</li>
-            ))}
-          </ul>
-        ) : null}
-        {previewItems.length ? (
-          <div className="uploader-preview">
-            <h3>Preview</h3>
-            <ul>
-              {previewItems.map((entry, idx) => (
-                <li key={`${entry.term}-${idx}`}>
-                  <strong>{entry.term}</strong>
-                  <span>{entry.meaning}</span>
-                </li>
-              ))}
-            </ul>
+        </section>
+      ) : null}
+
+      {showGuide ? (
+        <section className="modal" role="dialog" aria-modal="true">
+          <div className="modal-card">
+            <div className="modal-header">
+              <h2>Guide</h2>
+              <button type="button" onClick={() => setShowGuide(false)}>
+                Close
+              </button>
+            </div>
+            <p className="modal-subhead">
+              Use this prompt with your AI tool to convert your word list into a
+              one-click import file format.
+            </p>
+            <textarea className="prompt-box" readOnly value={AI_PROMPT} />
+            <div className="prompt-actions">
+              <button type="button" className="primary" onClick={handleCopyPrompt}>
+                Copy prompt
+              </button>
+              {copyStatus ? <span className="copy-status">{copyStatus}</span> : null}
+            </div>
           </div>
-        ) : null}
-      </section>
+        </section>
+      ) : null}
 
       <section className={cardClassName} aria-live="polite" onClick={toggleReveal}>
         <div className="hint">{hint}</div>

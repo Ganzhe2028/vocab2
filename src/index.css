@@ -143,6 +143,19 @@ header {
   gap: 6px;
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
 h1 {
   margin: 0;
   font-family: "Iowan Old Style", "Baskerville", "Garamond",
@@ -154,6 +167,46 @@ h1 {
 .subhead {
   color: var(--ink-soft);
   font-size: 15px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 20, 19, 0.4);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 10;
+}
+
+.modal-card {
+  width: min(720px, 100%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 16px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal-subhead {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .uploader {
@@ -271,6 +324,39 @@ h1 {
 
 .uploader-preview strong {
   font-size: 15px;
+}
+
+.prompt-box {
+  width: 100%;
+  min-height: 220px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 14px;
+  font-size: 13px;
+  font-family: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+  resize: vertical;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prompt-box {
+    background: rgba(9, 15, 14, 0.9);
+    color: var(--ink);
+  }
+}
+
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.copy-status {
+  font-size: 13px;
+  color: var(--accent-2);
+  font-weight: 600;
 }
 
 .card {
