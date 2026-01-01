@@ -1,4 +1,3 @@
 node_modules/
 .skill-venv/
-dist/*
-!dist/ui-ux-pro-max.skill
+.DS_Store
