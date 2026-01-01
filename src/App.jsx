@@ -257,7 +257,7 @@ export default function App() {
   }
 ]
 
-完成后提醒用户上传 JSON 文件以导入。`;
+一定记得需要以代码块的方式输出 JSON 文件以便用户导入。`;
 
   const runInstantly = useCallback((action) => {
     setNoAnim(true);
