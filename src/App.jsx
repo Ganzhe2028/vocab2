@@ -371,8 +371,100 @@ const extractDeckFromParsed = (parsed) => {
   return null;
 };
 
+const parseVocabMarkdown = (text) => {
+  const lines = text.split(/\r?\n/);
+  const entries = [];
+  let current = null;
+  const flush = () => {
+    if (current?.term) {
+      entries.push(current);
+    }
+    current = null;
+  };
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    const termMatch = line.match(/^\[(.+?)\]$/);
+    if (termMatch) {
+      flush();
+      current = { term: termMatch[1].trim() };
+      continue;
+    }
+    if (!current) continue;
+    if (line.startsWith("- Meaning")) {
+      const meaning = line.split(":").slice(1).join(":").trim();
+      if (meaning) {
+        current.meaning = meaning;
+      }
+      continue;
+    }
+    if (line.startsWith("- Sentence")) {
+      const sentence = line.split(":").slice(1).join(":").trim();
+      if (sentence) {
+        current.sentence = sentence;
+      }
+    }
+  }
+  flush();
+  return entries;
+};
+
+const parseCsvLine = (line) => {
+  const values = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === "," && !inQuotes) {
+      values.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  values.push(current);
+  return values.map((value) => value.trim());
+};
+
+const parseCsvDeck = (text) => {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = parseCsvLine(lines[0]).map((header) =>
+    header.toLowerCase()
+  );
+  if (!headers.some((header) => ["term", "word", "name"].includes(header))) {
+    return [];
+  }
+  return lines.slice(1).map((line) => {
+    const cells = parseCsvLine(line);
+    const entry = {};
+    headers.forEach((header, index) => {
+      entry[header] = cells[index];
+    });
+    return entry;
+  });
+};
+
 const parseDeckFromText = (rawText) => {
   const text = rawText.replace(/^\uFEFF/, "");
+  const mdDeck = parseVocabMarkdown(text);
+  if (mdDeck.length) {
+    return mdDeck;
+  }
+  const csvDeck = parseCsvDeck(text);
+  if (csvDeck.length) {
+    return csvDeck;
+  }
   const candidates = extractJsonCandidates(text);
   for (const candidate of candidates) {
     if (!candidate) continue;
@@ -408,6 +500,7 @@ const normalizeEntry = (entry) => {
     meaning: toText(entry?.meaning ?? entry?.definition),
     meaningZh: toText(entry?.meaningZh ?? entry?.meaning_zh ?? entry?.meaningZH),
     phrases,
+    sentence: toText(entry?.sentence),
   };
 };
 
@@ -545,6 +638,38 @@ export default function App() {
     }
   };
 
+  const downloadText = (filename, content, type = "text/plain") => {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const buildMarkdownExport = (items) =>
+    items
+      .map((entry) => {
+        const sentenceText = entry.sentence || "";
+        return `[${entry.term}]\n\n- Meaning (EN): ${
+          entry.meaning || ""
+        }\n- Sentence: ${sentenceText}`.trimEnd();
+      })
+      .join("\n\n");
+
+  const handleExportJson = () => {
+    if (!deck.length) return;
+    const content = JSON.stringify(deck, null, 2);
+    downloadText("vocab-deck.json", `${content}\n`, "application/json");
+  };
+
+  const handleExportMarkdown = () => {
+    if (!deck.length) return;
+    const content = buildMarkdownExport(deck);
+    downloadText("vocab-deck.md", `${content}\n`, "text/markdown");
+  };
+
   const handleImportFile = useCallback(
     async (event) => {
       const file = event.target.files?.[0];
@@ -645,6 +770,20 @@ export default function App() {
     };
   }, [guideOpen, nextCard, prevCard, removeCard, revealed, toggleReveal]);
 
+  useEffect(() => {
+    if (!guideOpen) return;
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setGuideOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [guideOpen]);
+
   const hasDeck = deck.length > 0;
   const item = hasDeck ? deck[index] : null;
   const term = hasDeck
@@ -676,6 +815,12 @@ export default function App() {
           <div className="header-actions">
             <button type="button" onClick={handleImportClick}>
               Import
+            </button>
+            <button type="button" onClick={handleExportJson}>
+              Export JSON
+            </button>
+            <button type="button" onClick={handleExportMarkdown}>
+              Export MD
             </button>
             <button type="button" onClick={() => setGuideOpen(true)}>
               Guidebook
