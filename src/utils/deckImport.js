@@ -215,10 +215,30 @@ const parseCsvDeck = (text) => {
     .map((line) => line.trim())
     .filter(Boolean);
   if (lines.length < 2) return [];
-  const headers = parseCsvLine(lines[0]).map((header) =>
-    header.toLowerCase()
-  );
-  if (!headers.some((header) => ["term", "word", "name"].includes(header))) {
+  const headerMap = {
+    word: "term",
+    name: "term",
+    term: "term",
+    meaning: "meaning",
+    definition: "meaning",
+    meaningzh: "meaningZh",
+    meaning_zh: "meaningZh",
+    meaningzh_cn: "meaningZh",
+    pos: "pos",
+    partofspeech: "pos",
+    part_of_speech: "pos",
+    syllables: "syllables",
+    respell: "respell",
+    phrases: "phrases",
+    collocations: "phrases",
+    sentence: "sentence",
+    example: "sentence",
+  };
+  const headers = parseCsvLine(lines[0]).map((header) => {
+    const normalized = header.toLowerCase().replace(/\s+/g, "");
+    return headerMap[normalized] ?? normalized;
+  });
+  if (!headers.includes("term")) {
     return [];
   }
   return lines.slice(1).map((line) => {
