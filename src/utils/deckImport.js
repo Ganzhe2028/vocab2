@@ -274,7 +274,12 @@ const normalizeEntry = (entry) => {
     respell: toText(entry?.respell),
     pos: toText(entry?.pos),
     meaning: toText(entry?.meaning ?? entry?.definition),
-    meaningZh: toText(entry?.meaningZh ?? entry?.meaning_zh ?? entry?.meaningZH),
+    meaningZh: toText(
+      entry?.meaningZh ??
+        entry?.meaning_zh ??
+        entry?.meaningZH ??
+        entry?.meaningzh
+    ),
     phrases,
     sentence: toText(entry?.sentence),
   };
