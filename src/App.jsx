@@ -411,6 +411,12 @@ export default function App() {
               <button type="button" onClick={handleImportClick}>
                 上传文件
               </button>
+              <button type="button" onClick={handleExportJson}>
+                Export JSON
+              </button>
+              <button type="button" onClick={handleExportMarkdown}>
+                Export MD
+              </button>
             </div>
             <div className="paste-block">
               <label htmlFor="paste-input">直接粘贴 AI 输出</label>
