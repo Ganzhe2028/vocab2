@@ -353,6 +353,12 @@ export default function App() {
             <button type="button" onClick={() => setGuideOpen(true)}>
               Guidebook
             </button>
+            <button type="button" onClick={handleExportJson}>
+              Export JSON
+            </button>
+            <button type="button" onClick={handleExportMarkdown}>
+              Export MD
+            </button>
           </div>
         </div>
         <div className="subhead">
