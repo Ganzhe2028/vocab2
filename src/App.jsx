@@ -645,6 +645,20 @@ export default function App() {
     };
   }, [guideOpen, nextCard, prevCard, removeCard, revealed, toggleReveal]);
 
+  useEffect(() => {
+    if (!guideOpen) return;
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setGuideOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [guideOpen]);
+
   const hasDeck = deck.length > 0;
   const item = hasDeck ? deck[index] : null;
   const term = hasDeck
