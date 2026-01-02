@@ -208,9 +208,7 @@ export default function App() {
         });
         setImportMessage(`已导入 ${normalized.length} 个单词。`);
       } catch (error) {
-        setImportMessage(
-          `导入失败：${error?.message || "无法解析文件内容。"}`
-        );
+        setImportMessage(`导入失败：${error?.message || "无法解析文件内容。"}`);
       } finally {
         event.target.value = "";
       }
@@ -238,9 +236,7 @@ export default function App() {
       });
       setImportMessage(`已导入 ${normalized.length} 个单词。`);
     } catch (error) {
-      setImportMessage(
-        `导入失败：${error?.message || "无法识别粘贴内容。"}`
-      );
+      setImportMessage(`导入失败：${error?.message || "无法识别粘贴内容。"}`);
     }
   }, [pasteText, runInstantly]);
 
@@ -353,12 +349,12 @@ export default function App() {
             <button type="button" onClick={() => setGuideOpen(true)}>
               Guidebook
             </button>
-            <button type="button" onClick={handleExportJson}>
+            {/* <button type="button" onClick={handleExportJson}>
               Export JSON
             </button>
             <button type="button" onClick={handleExportMarkdown}>
               Export MD
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="subhead">
@@ -394,8 +390,7 @@ export default function App() {
               </button>
             </div>
             <p>
-              你可以上传 .json/.md/.txt/.docx 文件，或直接粘贴 AI 输出内容。系统会
-              自动识别 JSON 数组或 deck 字段。
+              点击复制提示词后，把它和你的单词表一同给ai让它处理，将 AI 的回复粘贴在输入框里即可。同样接受上传 .json/.md/.txt/.docx 文件。系统会 自动识别 JSON 数组或 deck 字段
             </p>
             {/* <div className="prompt-box">
               <pre>{promptText}</pre>

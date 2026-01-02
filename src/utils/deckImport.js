@@ -2,8 +2,7 @@ const DOCX_MIME =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 const DOC_MIME = "application/msword";
 
-const readUint16LE = (data, offset) =>
-  data[offset] | (data[offset + 1] << 8);
+const readUint16LE = (data, offset) => data[offset] | (data[offset + 1] << 8);
 
 const readUint32LE = (data, offset) =>
   (data[offset] |
@@ -34,13 +33,15 @@ const inflateZipData = async (compressed) => {
   const blob = new Blob([compressed]);
   try {
     const stream = new DecompressionStream("deflate-raw");
-    const buffer = await new Response(blob.stream().pipeThrough(stream))
-      .arrayBuffer();
+    const buffer = await new Response(
+      blob.stream().pipeThrough(stream)
+    ).arrayBuffer();
     return new Uint8Array(buffer);
   } catch (error) {
     const stream = new DecompressionStream("deflate");
-    const buffer = await new Response(blob.stream().pipeThrough(stream))
-      .arrayBuffer();
+    const buffer = await new Response(
+      blob.stream().pipeThrough(stream)
+    ).arrayBuffer();
     return new Uint8Array(buffer);
   }
 };
@@ -315,7 +316,7 @@ export const readImportFile = async (file) => {
     return extractDocxText(file);
   }
   if (name.endsWith(".doc") || type === DOC_MIME) {
-    throw new Error("暂不支持 .doc，请另存为 .docx 或直接粘贴。");
+    throw new Error("暂不支持 .doc，请另存为 .docx 或直接粘贴在输入框里。");
   }
   return file.text();
 };
