@@ -700,8 +700,8 @@ export default function App() {
           return;
         }
 
-        // Letter keys — single printable character
-        if (key.length === 1 && /[a-zA-Z'-]/.test(key)) {
+        // Letter keys and space — single printable character
+        if (key.length === 1 && /[a-zA-Z' -]/.test(key)) {
           event.preventDefault();
           if (spellResult === "correct") return;
           if (spellResult === "wrong") {
