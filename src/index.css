@@ -671,6 +671,39 @@ button:disabled {
   }
 }
 
+/* ── GitHub button (matches existing buttons) ─────────── */
+.github-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--button-border);
+  background: var(--button-bg);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.github-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.github-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(31, 42, 36, 0.12);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
