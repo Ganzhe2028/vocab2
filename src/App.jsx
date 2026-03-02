@@ -226,8 +226,7 @@ const DOCX_MIME =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 const DOC_MIME = "application/msword";
 
-const readUint16LE = (data, offset) =>
-  data[offset] | (data[offset + 1] << 8);
+const readUint16LE = (data, offset) => data[offset] | (data[offset + 1] << 8);
 
 const readUint32LE = (data, offset) =>
   (data[offset] |
@@ -258,13 +257,15 @@ const inflateZipData = async (compressed) => {
   const blob = new Blob([compressed]);
   try {
     const stream = new DecompressionStream("deflate-raw");
-    const buffer = await new Response(blob.stream().pipeThrough(stream))
-      .arrayBuffer();
+    const buffer = await new Response(
+      blob.stream().pipeThrough(stream),
+    ).arrayBuffer();
     return new Uint8Array(buffer);
   } catch (error) {
     const stream = new DecompressionStream("deflate");
-    const buffer = await new Response(blob.stream().pipeThrough(stream))
-      .arrayBuffer();
+    const buffer = await new Response(
+      blob.stream().pipeThrough(stream),
+    ).arrayBuffer();
     return new Uint8Array(buffer);
   }
 };
@@ -292,7 +293,7 @@ const extractDocxXml = async (file) => {
     const localHeaderOffset = readUint32LE(data, offset + 42);
     const nameStart = offset + 46;
     const fileName = decoder.decode(
-      data.slice(nameStart, nameStart + fileNameLength)
+      data.slice(nameStart, nameStart + fileNameLength),
     );
     if (fileName === "word/document.xml") {
       if (readUint32LE(data, localHeaderOffset) !== 0x04034b50) {
@@ -395,18 +396,20 @@ const normalizeEntry = (entry) => {
   const phrases = Array.isArray(rawPhrases)
     ? rawPhrases.map(toText).filter(Boolean)
     : typeof rawPhrases === "string"
-    ? rawPhrases
-        .split(/[,;\n]/)
-        .map((phrase) => phrase.trim())
-        .filter(Boolean)
-    : [];
+      ? rawPhrases
+          .split(/[,;\n]/)
+          .map((phrase) => phrase.trim())
+          .filter(Boolean)
+      : [];
   return {
     term: toText(entry?.term ?? entry?.word ?? entry?.name),
     syllables: toText(entry?.syllables),
     respell: toText(entry?.respell),
     pos: toText(entry?.pos),
     meaning: toText(entry?.meaning ?? entry?.definition),
-    meaningZh: toText(entry?.meaningZh ?? entry?.meaning_zh ?? entry?.meaningZH),
+    meaningZh: toText(
+      entry?.meaningZh ?? entry?.meaning_zh ?? entry?.meaningZH,
+    ),
     phrases,
   };
 };
@@ -437,6 +440,14 @@ export default function App() {
   const [pasteText, setPasteText] = useState("");
   const fileInputRef = useRef(null);
   const guidePanelRef = useRef(null);
+
+  // ── Mode state ──────────────────────────────────────
+  // 'study' | 'rest' | 'spell'
+  const [mode, setMode] = useState("study");
+  const [spellIndex, setSpellIndex] = useState(0);
+  const [spellInput, setSpellInput] = useState("");
+  const [spellResult, setSpellResult] = useState(null); // null | 'correct' | 'wrong'
+  const [shakeKey, setShakeKey] = useState(0);
 
   const promptText = `你是英语词汇整理助手。请把用户提供的单词逐个补全为以下字段，并输出为可导入的 JSON 数组：
 
@@ -495,6 +506,25 @@ export default function App() {
     });
   }, [deck.length, runInstantly]);
 
+  // ── Mode helpers ────────────────────────────────────
+  const enterRestMode = useCallback(() => {
+    setMode("rest");
+    setRevealed(false);
+  }, []);
+
+  const enterStudyMode = useCallback(() => {
+    setMode("study");
+    setIndex(0);
+    setRevealed(false);
+  }, []);
+
+  const enterSpellMode = useCallback(() => {
+    setMode("spell");
+    setSpellIndex(0);
+    setSpellInput("");
+    setSpellResult(null);
+  }, []);
+
   const removeCard = useCallback(() => {
     if (!deck.length) return;
     runInstantly(() => {
@@ -536,6 +566,7 @@ export default function App() {
       setIndex(0);
       setRevealed(false);
       setLastRemoved(null);
+      setMode("study");
     });
   }, [runInstantly]);
 
@@ -564,14 +595,12 @@ export default function App() {
         });
         setImportMessage(`已导入 ${normalized.length} 个单词。`);
       } catch (error) {
-        setImportMessage(
-          `导入失败：${error?.message || "无法解析文件内容。"}`
-        );
+        setImportMessage(`导入失败：${error?.message || "无法解析文件内容。"}`);
       } finally {
         event.target.value = "";
       }
     },
-    [runInstantly]
+    [runInstantly],
   );
 
   const handlePasteImport = useCallback(() => {
@@ -594,9 +623,7 @@ export default function App() {
       });
       setImportMessage(`已导入 ${normalized.length} 个单词。`);
     } catch (error) {
-      setImportMessage(
-        `导入失败：${error?.message || "无法识别粘贴内容。"}`
-      );
+      setImportMessage(`导入失败：${error?.message || "无法识别粘贴内容。"}`);
     }
   }, [pasteText, runInstantly]);
 
@@ -611,12 +638,86 @@ export default function App() {
 
   useEffect(() => {
     const handleKeydown = (event) => {
-      if (guideOpen) {
+      if (guideOpen) return;
+      if (guidePanelRef.current?.contains(document.activeElement)) return;
+
+      // ── REST mode ──────────────────────────────────
+      if (mode === "rest") {
+        if (event.code === "Enter") {
+          event.preventDefault();
+          enterStudyMode();
+        } else if (event.code === "Space") {
+          event.preventDefault();
+          enterSpellMode();
+        }
         return;
       }
-      if (guidePanelRef.current?.contains(document.activeElement)) {
+
+      // ── SPELL mode ─────────────────────────────────
+      if (mode === "spell") {
+        const key = event.key;
+
+        if (event.code === "Escape") {
+          event.preventDefault();
+          setMode("study");
+          return;
+        }
+
+        if (event.code === "Enter") {
+          event.preventDefault();
+          if (spellResult === "correct") {
+            // Advance to next spell word
+            if (spellIndex + 1 >= deck.length) {
+              // Done with all words
+              enterStudyMode();
+            } else {
+              setSpellIndex((prev) => prev + 1);
+              setSpellInput("");
+              setSpellResult(null);
+            }
+          } else if (spellResult === "wrong") {
+            // Shake again
+            setShakeKey((prev) => prev + 1);
+          } else {
+            // Submit
+            const target = (deck[spellIndex]?.term ?? "").toLowerCase();
+            if (spellInput.toLowerCase() === target) {
+              setSpellResult("correct");
+            } else {
+              setSpellResult("wrong");
+              setShakeKey((prev) => prev + 1);
+            }
+          }
+          return;
+        }
+
+        if (event.code === "Backspace") {
+          event.preventDefault();
+          if (spellResult !== "correct") {
+            setSpellInput((prev) => prev.slice(0, -1));
+            setSpellResult(null);
+          }
+          return;
+        }
+
+        // Letter keys — single printable character
+        if (key.length === 1 && /[a-zA-Z'-]/.test(key)) {
+          event.preventDefault();
+          if (spellResult === "correct") return;
+          if (spellResult === "wrong") {
+            // Start over from this letter
+            setSpellInput(key);
+            setSpellResult(null);
+          } else {
+            setSpellInput((prev) => prev + key);
+          }
+          return;
+        }
+
         return;
       }
+
+      // ── STUDY mode (default) ────────────────────────
       if (event.code === "Space") {
         event.preventDefault();
         toggleReveal();
@@ -626,7 +727,12 @@ export default function App() {
       } else if (event.code === "Enter") {
         event.preventDefault();
         if (revealed) {
-          nextCard();
+          // Last card + revealed → enter rest mode
+          if (index === deck.length - 1) {
+            enterRestMode();
+          } else {
+            nextCard();
+          }
         } else {
           toggleReveal();
         }
@@ -643,7 +749,23 @@ export default function App() {
     return () => {
       document.removeEventListener("keydown", handleKeydown);
     };
-  }, [guideOpen, nextCard, prevCard, removeCard, revealed, toggleReveal]);
+  }, [
+    deck,
+    guideOpen,
+    index,
+    mode,
+    nextCard,
+    prevCard,
+    removeCard,
+    revealed,
+    spellIndex,
+    spellInput,
+    spellResult,
+    toggleReveal,
+    enterRestMode,
+    enterStudyMode,
+    enterSpellMode,
+  ]);
 
   const hasDeck = deck.length > 0;
   const item = hasDeck ? deck[index] : null;
@@ -715,8 +837,8 @@ export default function App() {
               </button>
             </div>
             <p>
-              你可以上传 .json/.md/.txt/.docx 文件，或直接粘贴 AI 输出内容。系统会
-              自动识别 JSON 数组或 deck 字段。
+              你可以上传 .json/.md/.txt/.docx 文件，或直接粘贴 AI
+              输出内容。系统会 自动识别 JSON 数组或 deck 字段。
             </p>
             {/* <div className="prompt-box">
               <pre>{promptText}</pre>
@@ -763,31 +885,98 @@ export default function App() {
         </div>
       ) : null}
 
-      <section
-        className={cardClassName}
-        aria-live="polite"
-        onClick={toggleReveal}
-      >
-        <div className="hint">{hint}</div>
-        <div className="term-row">
-          <h2 className="term">{term}</h2>
-          <div className={`pronounce${showDetails ? "" : " is-hidden"}`}>
-            <div className="pronounce-value">{respell}</div>
-          </div>
-        </div>
-        <p className={`meaning${showDetails ? "" : " is-hidden"}`}>
-          {posTag ? <span className="pos-tag">{posTag}</span> : null}
-          <span>{meaningText}</span>
-        </p>
-        <ul
-          className={`phrases${showDetails ? "" : " is-hidden"}`}
-          aria-label="Common phrases"
+      {/* ── Rest Screen ── */}
+      {mode === "rest" && (
+        <section className={`card rest-screen`} aria-live="polite">
+          <h2 className="rest-title">随手拼？</h2>
+          <p className="rest-subtitle">
+            enter 继续刷词 &nbsp;/&nbsp; space 开始随手拼
+          </p>
+        </section>
+      )}
+
+      {/* ── Spell Mode ── */}
+      {mode === "spell" &&
+        (() => {
+          const spellItem = deck[spellIndex] ?? null;
+          const spellPos = spellItem?.pos || "";
+          const spellMeaning = spellItem
+            ? `${spellItem.meaning} / ${spellItem.meaningZh}`
+            : "";
+          const spellCorrectDisplay =
+            spellItem?.syllables || spellItem?.term || "";
+          return (
+            <section className={`card spell-card`} aria-live="polite">
+              <div className="hint">
+                {spellResult === "correct"
+                  ? "enter 下一个"
+                  : spellResult === "wrong"
+                    ? "继续键入重拼 / enter 再shake / esc 退出"
+                    : "键入单词 · enter 提交 · esc 退出"}
+              </div>
+
+              {/* Meaning only — no word shown */}
+              <p className="meaning">
+                {spellPos ? <span className="pos-tag">{spellPos}</span> : null}
+                <span>{spellMeaning}</span>
+              </p>
+
+              {/* Live input display */}
+              <div className="spell-input-row">
+                <div
+                  className={`spell-input-display${
+                    spellResult === "correct"
+                      ? " correct"
+                      : spellResult === "wrong"
+                        ? " wrong"
+                        : ""
+                  }`}
+                  key={shakeKey}
+                >
+                  {spellInput || <span className="spell-cursor" />}
+                </div>
+              </div>
+
+              {/* Answer revealed after submit */}
+              {spellResult && (
+                <p className="spell-answer">{spellCorrectDisplay}</p>
+              )}
+
+              <div className="spell-progress">
+                {spellIndex + 1} / {deck.length}
+              </div>
+            </section>
+          );
+        })()}
+
+      {/* ── Study Card ── */}
+      {mode === "study" && (
+        <section
+          className={cardClassName}
+          aria-live="polite"
+          onClick={toggleReveal}
         >
-          {phrases.map((phrase) => (
-            <li key={phrase}>{phrase}</li>
-          ))}
-        </ul>
-      </section>
+          <div className="hint">{hint}</div>
+          <div className="term-row">
+            <h2 className="term">{term}</h2>
+            <div className={`pronounce${showDetails ? "" : " is-hidden"}`}>
+              <div className="pronounce-value">{respell}</div>
+            </div>
+          </div>
+          <p className={`meaning${showDetails ? "" : " is-hidden"}`}>
+            {posTag ? <span className="pos-tag">{posTag}</span> : null}
+            <span>{meaningText}</span>
+          </p>
+          <ul
+            className={`phrases${showDetails ? "" : " is-hidden"}`}
+            aria-label="Common phrases"
+          >
+            {phrases.map((phrase) => (
+              <li key={phrase}>{phrase}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="meta">
         <div className="progress">

@@ -76,16 +76,9 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(
-      1200px 400px at 10% 15%,
-      var(--glow-1),
-      transparent 60%
-    ),
-    radial-gradient(
-      800px 500px at 90% 10%,
-      var(--glow-2),
-      transparent 65%
-    ),
+  background:
+    radial-gradient(1200px 400px at 10% 15%, var(--glow-1), transparent 60%),
+    radial-gradient(800px 500px at 90% 10%, var(--glow-2), transparent 65%),
     linear-gradient(
       150deg,
       var(--bg-sand) 0%,
@@ -93,8 +86,8 @@ body {
       var(--bg-sky) 100%
     );
   color: var(--ink);
-  font-family: "Avenir Next", "Gill Sans", "Trebuchet MS",
-    "Helvetica Neue", sans-serif;
+  font-family:
+    "Avenir Next", "Gill Sans", "Trebuchet MS", "Helvetica Neue", sans-serif;
   letter-spacing: 0.2px;
   padding: 32px 20px 40px;
   overflow-x: hidden;
@@ -160,8 +153,8 @@ header {
 
 h1 {
   margin: 0;
-  font-family: "Iowan Old Style", "Baskerville", "Garamond",
-    "Times New Roman", serif;
+  font-family:
+    "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
   font-weight: 600;
   font-size: clamp(28px, 4vw, 40px);
 }
@@ -310,8 +303,8 @@ h1 {
 }
 
 .term {
-  font-family: "Iowan Old Style", "Baskerville", "Garamond",
-    "Times New Roman", serif;
+  font-family:
+    "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
   font-size: clamp(34px, 6vw, 56px);
   margin: 0;
   letter-spacing: 1px;
@@ -331,7 +324,9 @@ h1 {
   color: var(--ink-soft);
   opacity: 1;
   transform: translateY(0px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   min-height: 2.2em;
   display: flex;
   flex-wrap: wrap;
@@ -366,7 +361,9 @@ h1 {
   color: var(--ink);
   opacity: 1;
   transform: translateY(0px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .phrases.is-hidden {
@@ -465,7 +462,10 @@ button {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 button:hover {
@@ -513,6 +513,135 @@ button:disabled {
   100% {
     transform: translate3d(20px, -18px, 0) scale(1.08);
   }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-10px);
+  }
+  35% {
+    transform: translateX(10px);
+  }
+  55% {
+    transform: translateX(-7px);
+  }
+  75% {
+    transform: translateX(7px);
+  }
+  90% {
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Rest screen ─────────────────────────────────────── */
+.rest-screen {
+  cursor: default;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.rest-title {
+  font-family:
+    "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
+  font-size: clamp(36px, 6vw, 60px);
+  margin: 0;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+
+.rest-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--hint);
+  margin: 0;
+  letter-spacing: 1.5px;
+}
+
+/* ── Spell mode ──────────────────────────────────────── */
+.spell-card {
+  cursor: default;
+  align-content: center;
+}
+
+.spell-input-row {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+}
+
+.spell-input-display {
+  font-family:
+    "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
+  font-size: clamp(34px, 6vw, 56px);
+  letter-spacing: 1px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 1.2em;
+  transition: color 0.2s ease;
+}
+
+.spell-input-display.correct {
+  color: var(--accent-2);
+}
+
+.spell-input-display.wrong {
+  color: var(--accent);
+  animation: shake 0.45s ease;
+}
+
+.spell-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-left: 3px;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+.spell-answer {
+  font-family:
+    "Iowan Old Style", "Baskerville", "Garamond", "Times New Roman", serif;
+  font-size: clamp(22px, 4vw, 36px);
+  color: var(--accent-2);
+  letter-spacing: 1px;
+  margin: 0;
+  animation: fade-in-up 0.3s ease;
+}
+
+.spell-progress {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 4px;
 }
 
 @media (max-width: 600px) {
