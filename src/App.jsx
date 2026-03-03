@@ -1069,7 +1069,10 @@ export default function App() {
                   }`}
                   key={shakeKey}
                 >
-                  {spellInput || <span className="spell-cursor" />}
+                  {spellInput}
+                  {spellResult !== "correct" && (
+                    <span className="spell-cursor" key={spellInput.length} />
+                  )}
                 </div>
               </div>
 
