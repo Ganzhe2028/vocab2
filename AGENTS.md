@@ -1,5 +1,7 @@
 # Repository Guidelines
 
+> MUST DO：Things that must be done: Every time there is a modification or update, the corresponding document content must also be updated. Every time a task begins, one needs to re-read the document.
+
 ## Project Structure & Module Organization
 
 This repository is a Vite + React flashcard app with a separate vocabulary list.
