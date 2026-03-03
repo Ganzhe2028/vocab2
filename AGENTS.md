@@ -48,7 +48,7 @@ Spelling practice over the current deck in order. Shows only pos + meaning; the 
 
 **Keyboard behaviour:**
 
-- Letter keys — append to `spellInput`; if `spellResult === 'wrong'`, clears input and starts fresh from that letter
+- Letter keys / `Space` — append to `spellInput` (space supported for multi-word phrases); if `spellResult === 'wrong'`, clears input and starts fresh from that character
 - `Backspace` — delete last character (only when not correct)
 - `Enter` — submit; correct → green + show syllabified answer; wrong → shake animation + red text + show correct answer
 - `Enter` again when wrong (without retyping) → replay shake

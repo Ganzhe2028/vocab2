@@ -852,56 +852,171 @@ export default function App() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="guide-header">
-              <h2>导入指南</h2>
+              <h2>使用指南</h2>
               <button type="button" onClick={() => setGuideOpen(false)}>
                 关闭
               </button>
             </div>
-            <p>
-              你可以上传 .json/.md/.txt/.docx 文件，或直接粘贴 AI
-              输出内容。系统会 自动识别 JSON 数组或 deck 字段。
-            </p>
-            {/* <div className="prompt-box">
-              <pre>{promptText}</pre>
-            </div> */}
-            <div className="guide-actions">
-              <button
-                className="primary"
-                type="button"
-                onClick={handleCopyPrompt}
-              >
-                复制提示词
-              </button>
-              <button type="button" onClick={handleImportClick}>
-                上传文件
-              </button>
-            </div>
-            <div className="paste-block">
-              <label htmlFor="paste-input">直接粘贴 AI 输出</label>
-              <textarea
-                id="paste-input"
-                className="paste-textarea"
-                placeholder="粘贴 JSON 数组，或 ```json ...``` 代码块内容。"
-                value={pasteText}
-                onChange={(event) => setPasteText(event.target.value)}
-              />
-              <div className="paste-actions">
-                <button
-                  className="primary"
-                  type="button"
-                  onClick={handlePasteImport}
-                  disabled={!pasteText.trim()}
-                >
-                  识别并导入
-                </button>
-                <button type="button" onClick={() => setPasteText("")}>
-                  清空
-                </button>
+
+            {/* ── 导入词库 ── */}
+            <div className="guide-section">
+              <h3 className="guide-section-title">📥 导入你的单词</h3>
+
+              {/* Step 1 */}
+              <div className="guide-step">
+                <div className="guide-step-num">1</div>
+                <div className="guide-step-body">
+                  <div className="guide-step-title">准备好你的单词表</div>
+                  <p className="guide-step-desc">
+                    把你要背的单词整理成一行一个的列表，可以直接复制课本或笔记里的单词，不需要任何格式。
+                  </p>
+                </div>
               </div>
-              <p className="paste-hint">
-                支持 JSON 数组、包含 deck 的对象，或代码块包裹的 JSON。
+
+              {/* Step 2 */}
+              <div className="guide-step">
+                <div className="guide-step-num">2</div>
+                <div className="guide-step-body">
+                  <div className="guide-step-title">
+                    复制提示词，发给 ChatGPT / Claude
+                  </div>
+                  <p className="guide-step-desc">
+                    点下方「复制提示词」，然后打开 ChatGPT 或
+                    Claude，把提示词粘贴进去，再把你的单词表也附在后面发送。
+                  </p>
+                  <button
+                    className="primary guide-step-btn"
+                    type="button"
+                    onClick={handleCopyPrompt}
+                  >
+                    复制提示词
+                  </button>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="guide-step">
+                <div className="guide-step-num">3</div>
+                <div className="guide-step-body">
+                  <div className="guide-step-title">把 AI 的回复粘贴进来</div>
+                  <p className="guide-step-desc">
+                    AI 会生成一段 JSON 代码，把它全选复制，粘贴到下方输入框。
+                  </p>
+                  <div className="paste-block">
+                    <textarea
+                      id="paste-input"
+                      className="paste-textarea"
+                      placeholder="把 AI 生成的内容粘贴到这里…"
+                      value={pasteText}
+                      onChange={(event) => setPasteText(event.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="guide-step">
+                <div className="guide-step-num">4</div>
+                <div className="guide-step-body">
+                  <div className="guide-step-title">点「导入」，开始刷词！</div>
+                  <p className="guide-step-desc">
+                    导入成功后关掉这个面板，就能看到你的单词卡了。
+                  </p>
+                  <div className="paste-actions">
+                    <button
+                      className="primary guide-step-btn"
+                      type="button"
+                      onClick={handlePasteImport}
+                      disabled={!pasteText.trim()}
+                    >
+                      识别并导入
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPasteText("")}
+                      disabled={!pasteText.trim()}
+                    >
+                      清空
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 也可以直接上传文件 */}
+              <p className="guide-alt-import">
+                已有 <code>.json / .txt / .docx</code> 文件？
+                <button
+                  type="button"
+                  className="guide-link-btn"
+                  onClick={handleImportClick}
+                >
+                  直接上传
+                </button>
               </p>
             </div>
+
+            <hr className="guide-divider" />
+
+            {/* ── 怎么用（折叠） ── */}
+            <details className="guide-details">
+              <summary className="guide-details-summary">📖 怎么用</summary>
+
+              <div className="guide-section guide-details-body">
+                <div className="guide-mode-block">
+                  <div className="guide-mode-badge">刷词模式</div>
+                  <p className="guide-mode-desc">
+                    默认状态，每次显示一张单词卡。
+                  </p>
+                  <ul className="guide-key-list">
+                    <li>
+                      <kbd>Space</kbd> 或 <kbd>Enter</kbd> — 翻开释义 / 隐藏
+                    </li>
+                    <li>
+                      翻开后再按 <kbd>Enter</kbd> — 进入下一张
+                    </li>
+                    <li>
+                      <kbd>Tab</kbd> 或 <kbd>←</kbd> — 上一张
+                    </li>
+                    <li>
+                      <kbd>Delete</kbd> — 从本轮移除当前单词
+                    </li>
+                    <li>
+                      刷完最后一张后按 <kbd>Enter</kbd> — 进入休息屏
+                    </li>
+                  </ul>
+                  <p className="guide-mobile-tip">
+                    📱 手机：直接点卡片翻面，用底部按钮切换。
+                  </p>
+                </div>
+
+                <div className="guide-mode-block">
+                  <div className="guide-mode-badge guide-mode-badge--spell">
+                    随手拼模式
+                  </div>
+                  <p className="guide-mode-desc">
+                    刷完一轮后，在休息屏按 <kbd>Space</kbd> 进入。
+                    <br />
+                    屏幕只显示词义，你需要凭记忆键入单词拼写。
+                  </p>
+                  <ul className="guide-key-list">
+                    <li>直接键入字母（及空格）— 累积输入</li>
+                    <li>
+                      <kbd>Enter</kbd> — 提交答案
+                    </li>
+                    <li>
+                      答对后按 <kbd>Enter</kbd> — 下一个词
+                    </li>
+                    <li>答错后继续键入 — 自动清空重拼</li>
+                    <li>
+                      <kbd>Backspace</kbd> — 删除最后一个字符
+                    </li>
+                    <li>
+                      <kbd>Esc</kbd> — 退出，回到刷词模式
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </details>
           </section>
         </div>
       ) : null}

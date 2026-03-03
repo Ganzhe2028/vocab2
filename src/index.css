@@ -275,6 +275,238 @@ h1 {
   color: var(--ink-soft);
 }
 
+/* ── Guide panel sections ────────────────────────────── */
+.guide-section {
+  display: grid;
+  gap: 14px;
+}
+
+.guide-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--ink);
+}
+
+.guide-mode-block {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.guide-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--pos-bg);
+  border: 1px solid var(--pos-border);
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.guide-mode-badge--spell {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.guide-mode-desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.guide-key-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 5px;
+}
+
+.guide-key-list li {
+  font-size: 14px;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.5;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  font-family: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.guide-mobile-tip {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.guide-divider {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.guide-import-desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.guide-import-desc code {
+  font-family: "SFMono-Regular", "Menlo", "Monaco", "Courier New", monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 1px 6px;
+  border-radius: 5px;
+}
+
+.guide-details {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.guide-details-summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+
+.guide-details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-details-summary::after {
+  content: "›";
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--ink-soft);
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.guide-details[open] .guide-details-summary::after {
+  transform: rotate(90deg);
+}
+
+.guide-details-body {
+  padding: 0 16px 16px;
+}
+
+/* ── Step-by-step import flow ────────────────────────── */
+.guide-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.guide-step-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.guide-step-body {
+  display: grid;
+  gap: 6px;
+  flex: 1;
+}
+
+.guide-step-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.guide-step-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.guide-step-btn {
+  width: fit-content;
+}
+
+.guide-alt-import {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.guide-alt-import code {
+  font-family: "SFMono-Regular", "Menlo", "Monaco", monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.guide-link-btn {
+  border: none;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-2);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guide-link-btn:hover {
+  transform: none;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
