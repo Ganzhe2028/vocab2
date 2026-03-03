@@ -919,11 +919,11 @@ export default function App() {
                 <div className="guide-step-num">2</div>
                 <div className="guide-step-body">
                   <div className="guide-step-title">
-                    复制提示词，发给 ChatGPT / Claude
+                    复制提示词，发给 DeepSeek 或 ChatGPT
                   </div>
                   <p className="guide-step-desc">
-                    点下方「复制提示词」，然后打开 ChatGPT 或
-                    Claude，把提示词粘贴进去，再把你的单词表也附在后面发送。
+                    点下方「复制提示词」，然后打开 DeepSeek 或
+                    ChatGPT
                   </p>
                   <button
                     className="primary guide-step-btn"
