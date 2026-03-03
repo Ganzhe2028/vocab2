@@ -438,6 +438,7 @@ export default function App() {
   const [guideOpen, setGuideOpen] = useState(false);
   const [importMessage, setImportMessage] = useState("");
   const [pasteText, setPasteText] = useState("");
+  const [importedDeckData, setImportedDeckData] = useState(null);
   const fileInputRef = useRef(null);
   const guidePanelRef = useRef(null);
 
@@ -621,11 +622,51 @@ export default function App() {
         setRevealed(false);
         setLastRemoved(null);
       });
+      setImportedDeckData(normalized);
       setImportMessage(`已导入 ${normalized.length} 个单词。`);
     } catch (error) {
+      setImportedDeckData(null);
       setImportMessage(`导入失败：${error?.message || "无法识别粘贴内容。"}`);
     }
   }, [pasteText, runInstantly]);
+
+  const handleExportJson = useCallback(() => {
+    if (!importedDeckData) return;
+    const json = JSON.stringify(importedDeckData, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "vocab-deck.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [importedDeckData]);
+
+  const handleExportMd = useCallback(() => {
+    if (!importedDeckData) return;
+    const lines = importedDeckData.map((entry) => {
+      const phrases = (entry.phrases ?? []).join(" / ");
+      return [
+        `## ${entry.term}`,
+        entry.syllables ? `**分节**: ${entry.syllables}` : "",
+        entry.respell ? `**发音**: ${entry.respell}` : "",
+        entry.pos ? `**词性**: ${entry.pos}` : "",
+        entry.meaning ? `**释义**: ${entry.meaning}` : "",
+        entry.meaningZh ? `**中文**: ${entry.meaningZh}` : "",
+        phrases ? `**搭配**: ${phrases}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+    });
+    const md = lines.join("\n\n");
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "vocab-deck.md";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [importedDeckData]);
 
   const handleCopyPrompt = async () => {
     try {
@@ -933,12 +974,38 @@ export default function App() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setPasteText("")}
+                      onClick={() => {
+                        setPasteText("");
+                        setImportedDeckData(null);
+                      }}
                       disabled={!pasteText.trim()}
                     >
                       清空
                     </button>
                   </div>
+                  {importedDeckData && (
+                    <div className="export-actions">
+                      <span className="export-label">
+                        ✅ 导入成功，保存副本：
+                      </span>
+                      <button
+                        type="button"
+                        className="export-btn"
+                        onClick={handleExportJson}
+                        title="下载 JSON 文件"
+                      >
+                        ⬇ JSON
+                      </button>
+                      <button
+                        type="button"
+                        className="export-btn"
+                        onClick={handleExportMd}
+                        title="下载 Markdown 文件"
+                      >
+                        ⬇ Markdown
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
