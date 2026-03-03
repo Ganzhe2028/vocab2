@@ -837,6 +837,7 @@ button:disabled {
   align-items: center;
   gap: 2px;
   min-height: 1.2em;
+  white-space: pre;
   transition: color 0.2s ease;
 }
 
