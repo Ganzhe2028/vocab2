@@ -6,7 +6,7 @@
 
 This repository is a Vite + React flashcard app with a separate vocabulary list.
 
-- Root: `index.html`, `package.json`/`package-lock.json`, `vite.config.js`, and `vocab.md`.
+- Root: `index.html`, `package.json`/`package-lock.json`, `vite.config.js`, `run.sh`, and `vocab.md`.
 - `dist/ui-ux-pro-max.skill` stores the packaged Codex skill artifact.
 - `src/` holds the app: `main.jsx` mounts React, `App.jsx` contains all flashcard logic and `baseDeck` data, and `index.css` sets global styles, theme variables, and all animations.
 - `node_modules/` is generated; do not edit it.
@@ -18,7 +18,7 @@ This repository is a Vite + React flashcard app with a separate vocabulary list.
 
 ### `study` mode (default)
 
-Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance.
+Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and one example sentence with a bolded focus phrase.
 
 **Keyboard shortcuts:**
 
@@ -63,7 +63,7 @@ A fixed, circular GitHub logo button sits in the top-right corner of the viewpor
 
 ## Content Format & Naming Conventions
 
-`vocab.md` entries use a three-line block separated by a blank line. Use a word label in brackets, Title Case; then meaning and sentence lines with `- Meaning (EN):` and `- Sentence:`. Avoid extra indentation or nested lists, and prefer ASCII unless a word requires otherwise.
+`vocab.md` entries use a four-line block separated by a blank line. Use a word label in brackets, Title Case; then meaning, sentence, and focus lines with `- Meaning (EN):`, `- Sentence:`, and `- Focus:`. `Focus` must match the exact substring that should be emphasized inside the sentence. Avoid extra indentation or nested lists, and prefer ASCII unless a word requires otherwise.
 
 Example format:
 
@@ -72,9 +72,10 @@ Example format:
 
 - Meaning (EN): short, clear definition
 - Sentence: A full sentence that ends with a period.
+- Focus: Exact phrase from the sentence to emphasize.
 ```
 
-`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, and `phrases`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and keep `phrases` as short, common collocations.
+`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, `sentence`, and `sentenceFocus`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and make sure `sentenceFocus` appears verbatim inside `sentence`.
 
 Example `baseDeck` entry:
 
@@ -86,7 +87,8 @@ Example `baseDeck` entry:
   pos: "adj.",
   meaning: "empty; not occupied",
   meaningZh: "空的；未被占用",
-  phrases: ["vacant seat", "vacant position"],
+  sentence: "I moved to the vacant seat near the window.",
+  sentenceFocus: "vacant seat",
 },
 ```
 
@@ -95,6 +97,7 @@ Append new words to the end of both `vocab.md` and `baseDeck` unless you are del
 ## Build, Test, and Development Commands
 
 - `npm install` (or `npm ci`)
+- `./run.sh`
 - `npm run dev`
 - `npm run build`
 - `npm run preview`

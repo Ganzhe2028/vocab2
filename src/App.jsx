@@ -8,7 +8,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "empty; not occupied",
     meaningZh: "空的；未被占用",
-    phrases: ["vacant seat", "vacant position"],
+    sentence: "I moved to the vacant seat near the window.",
+    sentenceFocus: "vacant seat",
   },
   {
     term: "Proximity",
@@ -17,7 +18,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "the state of being near; closeness",
     meaningZh: "接近；邻近",
-    phrases: ["close proximity", "in proximity to"],
+    sentence: "The cafe is in close proximity to the station.",
+    sentenceFocus: "in close proximity to",
   },
   {
     term: "Devise",
@@ -26,7 +28,8 @@ const baseDeck = [
     pos: "v.",
     meaning: "to plan or invent something carefully",
     meaningZh: "设计；制定；想出",
-    phrases: ["devise a plan", "devise a strategy"],
+    sentence: "The team devised a strategy for the second round.",
+    sentenceFocus: "devised a strategy",
   },
   {
     term: "Mundane",
@@ -35,7 +38,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "ordinary and not interesting",
     meaningZh: "平凡的；乏味的",
-    phrases: ["mundane tasks", "mundane routine"],
+    sentence: "After a month, the filing work felt like a mundane routine.",
+    sentenceFocus: "mundane routine",
   },
   {
     term: "Translucent",
@@ -44,7 +48,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "allowing some light to pass through; semi-transparent",
     meaningZh: "半透明的",
-    phrases: ["translucent glass", "translucent curtain"],
+    sentence: "Morning light passed through the translucent curtain.",
+    sentenceFocus: "translucent curtain",
   },
   {
     term: "Probe",
@@ -53,7 +58,8 @@ const baseDeck = [
     pos: "v.",
     meaning: "to investigate or examine closely",
     meaningZh: "调查；探查",
-    phrases: ["probe the issue", "probe deeper"],
+    sentence: "The reporter kept trying to probe deeper into the funding trail.",
+    sentenceFocus: "probe deeper",
   },
   {
     term: "Revive",
@@ -62,7 +68,8 @@ const baseDeck = [
     pos: "v.",
     meaning: "to bring back to life or make active again",
     meaningZh: "复苏；恢复；使复活",
-    phrases: ["revive interest", "revive the economy"],
+    sentence: "Lower prices helped revive interest in the old neighborhood.",
+    sentenceFocus: "revive interest",
   },
   {
     term: "Inhabit",
@@ -71,7 +78,8 @@ const baseDeck = [
     pos: "v.",
     meaning: "to live in a place",
     meaningZh: "居住于；栖息于",
-    phrases: ["inhabit the island", "inhabit the region"],
+    sentence: "Few animals can inhabit the region all year long.",
+    sentenceFocus: "inhabit the region",
   },
   {
     term: "Credibility",
@@ -80,7 +88,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "the quality of being believable or trustworthy",
     meaningZh: "可信度；可信性",
-    phrases: ["lose credibility", "credibility gap"],
+    sentence: "The minister began to lose credibility after the report leaked.",
+    sentenceFocus: "lose credibility",
   },
   {
     term: "Lucid",
@@ -89,7 +98,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "clear and easy to understand",
     meaningZh: "清晰的；易懂的",
-    phrases: ["lucid explanation", "lucid moment"],
+    sentence: "Her diagram gave us a lucid explanation of the process.",
+    sentenceFocus: "lucid explanation",
   },
   {
     term: "Fatigue",
@@ -98,7 +108,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "extreme tiredness after long effort",
     meaningZh: "疲劳；疲惫",
-    phrases: ["mental fatigue", "fatigue sets in"],
+    sentence: "By Friday afternoon, mental fatigue was slowing everyone down.",
+    sentenceFocus: "mental fatigue",
   },
   {
     term: "Impulse",
@@ -107,7 +118,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "a sudden urge to do something without thinking",
     meaningZh: "冲动",
-    phrases: ["on impulse", "impulse purchase"],
+    sentence: "I grabbed the notebook on impulse at the checkout.",
+    sentenceFocus: "on impulse",
   },
   {
     term: "Recede",
@@ -116,7 +128,8 @@ const baseDeck = [
     pos: "v.",
     meaning: "to move back; to gradually become smaller or weaker",
     meaningZh: "后退；逐渐减弱",
-    phrases: ["recede into the distance", "pain recedes"],
+    sentence: "At dusk, the boats seemed to recede into the distance.",
+    sentenceFocus: "recede into the distance",
   },
   {
     term: "Distorted",
@@ -125,7 +138,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "changed in shape or meaning; twisted or unclear",
     meaningZh: "扭曲的；失真的",
-    phrases: ["distorted view", "distorted sound"],
+    sentence: "The old radio played a distorted sound all evening.",
+    sentenceFocus: "distorted sound",
   },
   {
     term: "Deception",
@@ -134,7 +148,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "the act of tricking someone by lying or hiding the truth",
     meaningZh: "欺骗；欺诈",
-    phrases: ["act of deception", "deception tactics"],
+    sentence: "The fake charity used deception tactics to gain trust.",
+    sentenceFocus: "deception tactics",
   },
   {
     term: "Prosperous",
@@ -143,7 +158,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "successful, wealthy, or doing well",
     meaningZh: "繁荣的；富裕的",
-    phrases: ["prosperous economy", "prosperous times"],
+    sentence: "A prosperous economy usually brings more hiring.",
+    sentenceFocus: "prosperous economy",
   },
   {
     term: "Elusive",
@@ -152,7 +168,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "difficult to find, catch, or understand",
     meaningZh: "难以捉摸的；难以找到的",
-    phrases: ["elusive target", "elusive answer"],
+    sentence: "Even after three meetings, an elusive answer kept slipping away.",
+    sentenceFocus: "elusive answer",
   },
   {
     term: "Bloated",
@@ -161,7 +178,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "swollen; or made too big with unnecessary parts",
     meaningZh: "肿胀的；膨胀的",
-    phrases: ["bloated budget", "bloated stomach"],
+    sentence: "The team cut a bloated budget before the launch.",
+    sentenceFocus: "bloated budget",
   },
   {
     term: "Contempt",
@@ -170,7 +188,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "strong disrespect; the feeling that someone is beneath you",
     meaningZh: "轻蔑；蔑视",
-    phrases: ["feel contempt", "open contempt"],
+    sentence: "He spoke about the rule with open contempt.",
+    sentenceFocus: "open contempt",
   },
   {
     term: "Centennial",
@@ -179,7 +198,8 @@ const baseDeck = [
     pos: "adj.",
     meaning: "relating to the 100th anniversary of something",
     meaningZh: "百年纪念的",
-    phrases: ["centennial celebration", "centennial anniversary"],
+    sentence: "The town is planning a centennial celebration this summer.",
+    sentenceFocus: "centennial celebration",
   },
   {
     term: "Atrocity",
@@ -188,7 +208,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "an extremely cruel or brutal act",
     meaningZh: "暴行；残暴行为",
-    phrases: ["commit an atrocity", "war atrocity"],
+    sentence: "The tribunal documented a war atrocity in detail.",
+    sentenceFocus: "war atrocity",
   },
   {
     term: "Phantoms",
@@ -197,7 +218,8 @@ const baseDeck = [
     pos: "n. pl.",
     meaning: "ghosts; shadowy figures (real or imagined)",
     meaningZh: "幻影；幽灵",
-    phrases: ["phantom pains", "phantom sounds"],
+    sentence: "After the surgery, he still felt phantom pains in his leg.",
+    sentenceFocus: "phantom pains",
   },
   {
     term: "Negligence",
@@ -206,7 +228,8 @@ const baseDeck = [
     pos: "n.",
     meaning: "failure to take proper care; carelessness",
     meaningZh: "疏忽；过失",
-    phrases: ["gross negligence", "negligence claim"],
+    sentence: "The court found gross negligence in the safety checks.",
+    sentenceFocus: "gross negligence",
   },
   {
     term: "Complicity",
@@ -216,11 +239,38 @@ const baseDeck = [
     meaning:
       "involvement in a wrongful act, especially by helping or allowing it",
     meaningZh: "共谋；同谋",
-    phrases: ["complicity in a crime", "silent complicity"],
+    sentence: "Silence can become silent complicity when harm is obvious.",
+    sentenceFocus: "silent complicity",
   },
 ];
 
 const cloneDeck = () => baseDeck.map((item) => ({ ...item }));
+
+const findTextRange = (source, query) => {
+  const text = typeof source === "string" ? source : "";
+  const needle = typeof query === "string" ? query.trim() : "";
+  if (!text || !needle) return null;
+
+  const start = text.toLowerCase().indexOf(needle.toLowerCase());
+  if (start === -1) return null;
+
+  return {
+    start,
+    end: start + needle.length,
+  };
+};
+
+const getHighlightedSentence = (sentence, sentenceFocus, term) => {
+  const match =
+    findTextRange(sentence, sentenceFocus) ?? findTextRange(sentence, term);
+  if (!match) return null;
+
+  return {
+    before: sentence.slice(0, match.start),
+    highlight: sentence.slice(match.start, match.end),
+    after: sentence.slice(match.end),
+  };
+};
 
 const DOCX_MIME =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -392,15 +442,6 @@ const parseDeckFromText = (rawText) => {
 
 const normalizeEntry = (entry) => {
   const toText = (value) => (value == null ? "" : String(value)).trim();
-  const rawPhrases = entry?.phrases ?? entry?.collocations ?? [];
-  const phrases = Array.isArray(rawPhrases)
-    ? rawPhrases.map(toText).filter(Boolean)
-    : typeof rawPhrases === "string"
-      ? rawPhrases
-          .split(/[,;\n]/)
-          .map((phrase) => phrase.trim())
-          .filter(Boolean)
-      : [];
   return {
     term: toText(entry?.term ?? entry?.word ?? entry?.name),
     syllables: toText(entry?.syllables),
@@ -410,7 +451,18 @@ const normalizeEntry = (entry) => {
     meaningZh: toText(
       entry?.meaningZh ?? entry?.meaning_zh ?? entry?.meaningZH,
     ),
-    phrases,
+    sentence: toText(
+      entry?.sentence ??
+        entry?.example ??
+        entry?.exampleSentence ??
+        entry?.example_sentence,
+    ),
+    sentenceFocus: toText(
+      entry?.sentenceFocus ??
+        entry?.sentence_focus ??
+        entry?.focus ??
+        entry?.highlight,
+    ),
   };
 };
 
@@ -459,7 +511,8 @@ export default function App() {
 - pos: 词性缩写（如 "n.", "v.", "adj.", "adv."）
 - meaning: 英文简明释义
 - meaningZh: 中文释义
-- phrases: 常用搭配短语数组（2-3 个）
+- sentence: 例句，必须自然、简洁
+- sentenceFocus: 例句中需要加粗显示的原文片段，必须与 sentence 中的字符完全一致
 
 输出格式示例（仅 JSON，不要多余文字）：
 [
@@ -470,9 +523,12 @@ export default function App() {
     "pos": "n.",
     "meaning": "a thing that illustrates a rule",
     "meaningZh": "例子；示例",
-    "phrases": ["for example", "example sentence"]
+    "sentence": "This chart is a clear example of the trend.",
+    "sentenceFocus": "clear example"
   }
 ]
+
+不要输出 phrases 字段。一定确保 sentence 中原样包含 sentenceFocus。
 
 一定记得需要以代码块的方式输出 JSON 文件以便用户导入。`;
 
@@ -645,18 +701,16 @@ export default function App() {
   const handleExportMd = useCallback(() => {
     if (!importedDeckData) return;
     const lines = importedDeckData.map((entry) => {
-      const phrases = (entry.phrases ?? []).join(" / ");
-      return [
-        `## ${entry.term}`,
-        entry.syllables ? `**分节**: ${entry.syllables}` : "",
-        entry.respell ? `**发音**: ${entry.respell}` : "",
-        entry.pos ? `**词性**: ${entry.pos}` : "",
-        entry.meaning ? `**释义**: ${entry.meaning}` : "",
-        entry.meaningZh ? `**中文**: ${entry.meaningZh}` : "",
-        phrases ? `**搭配**: ${phrases}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n");
+      const body = [
+        entry.pos ? `- POS: ${entry.pos}` : "",
+        entry.syllables ? `- Syllables: ${entry.syllables}` : "",
+        entry.respell ? `- Respell: ${entry.respell}` : "",
+        entry.meaning ? `- Meaning (EN): ${entry.meaning}` : "",
+        entry.meaningZh ? `- Meaning (ZH): ${entry.meaningZh}` : "",
+        entry.sentence ? `- Sentence: ${entry.sentence}` : "",
+        entry.sentenceFocus ? `- Focus: ${entry.sentenceFocus}` : "",
+      ].filter(Boolean);
+      return [`[${entry.term}]`, "", ...body].join("\n");
     });
     const md = lines.join("\n\n");
     const blob = new Blob([md], { type: "text/markdown" });
@@ -816,14 +870,21 @@ export default function App() {
       : item?.term
     : "No words loaded";
   const posTag = item?.pos || "";
-  const meaningText = item ? `${item.meaning} / ${item.meaningZh}` : "";
-  const phrases = item?.phrases ?? [];
+  const meaningText = item
+    ? [item.meaning, item.meaningZh].filter(Boolean).join(" / ")
+    : "";
+  const sentenceText = item?.sentence || "";
+  const sentenceHighlight = getHighlightedSentence(
+    sentenceText,
+    item?.sentenceFocus,
+    item?.term,
+  );
   const respell = item?.respell || "";
   const showDetails = revealed && hasDeck;
   const hint = hasDeck
     ? revealed
       ? "Enter for next, Space hides, Tab/<- for previous, Delete removes"
-      : "Enter or Space reveals meaning + phrases"
+      : "Enter or Space reveals meaning + example sentence"
     : "Deck empty. Press Reset to reload.";
   const progress = hasDeck ? (index + 1) / deck.length : 0;
 
@@ -941,7 +1002,7 @@ export default function App() {
                 <div className="guide-step-body">
                   <div className="guide-step-title">把 AI 的回复粘贴进来</div>
                   <p className="guide-step-desc">
-                    AI 会生成一段 JSON 代码，把它全选复制，粘贴到下方输入框。
+                    AI 会生成一段包含例句和高亮片段的 JSON 代码，把它全选复制，粘贴到下方输入框。
                   </p>
                   <div className="paste-block">
                     <textarea
@@ -1036,7 +1097,8 @@ export default function App() {
                   </p>
                   <ul className="guide-key-list">
                     <li>
-                      <kbd>Space</kbd> 或 <kbd>Enter</kbd> — 翻开释义 / 隐藏
+                      <kbd>Space</kbd> 或 <kbd>Enter</kbd> — 翻开释义和例句 /
+                      隐藏
                     </li>
                     <li>
                       翻开后再按 <kbd>Enter</kbd> — 进入下一张
@@ -1104,7 +1166,7 @@ export default function App() {
           const spellItem = deck[spellIndex] ?? null;
           const spellPos = spellItem?.pos || "";
           const spellMeaning = spellItem
-            ? `${spellItem.meaning} / ${spellItem.meaningZh}`
+            ? [spellItem.meaning, spellItem.meaningZh].filter(Boolean).join(" / ")
             : "";
           const spellCorrectDisplay =
             spellItem?.syllables || spellItem?.term || "";
@@ -1173,14 +1235,25 @@ export default function App() {
             {posTag ? <span className="pos-tag">{posTag}</span> : null}
             <span>{meaningText}</span>
           </p>
-          <ul
-            className={`phrases${showDetails ? "" : " is-hidden"}`}
-            aria-label="Common phrases"
-          >
-            {phrases.map((phrase) => (
-              <li key={phrase}>{phrase}</li>
-            ))}
-          </ul>
+          {sentenceText ? (
+            <div
+              className={`example${showDetails ? "" : " is-hidden"}`}
+              aria-label="Example sentence"
+            >
+              <div className="example-label">Example</div>
+              <p className="example-sentence">
+                {sentenceHighlight ? (
+                  <>
+                    {sentenceHighlight.before}
+                    <strong>{sentenceHighlight.highlight}</strong>
+                    {sentenceHighlight.after}
+                  </>
+                ) : (
+                  sentenceText
+                )}
+              </p>
+            </div>
+          ) : null}
         </section>
       )}
 

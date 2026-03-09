@@ -1,3 +1,17 @@
+例句卡面更新
+
+study 模式翻开卡片后，不再显示 phrases 列表，改为显示 1 条例句
+每个词条新增 `sentence` 和 `sentenceFocus`
+卡面会优先加粗 `sentenceFocus`；若缺失或句中找不到，再回退到加粗 `term`
+导入提示词、JSON 归一化、JSON/Markdown 导出都已切到 `sentence` / `sentenceFocus`
+`vocab.md` 词条格式从 Meaning + Sentence 扩展为 Meaning + Sentence + Focus
+
+快速启动脚本
+
+根目录新增 `run.sh`
+脚本会先切到项目目录；若缺少 `node_modules`，会自动执行 `npm install`
+随后用 `npm run dev -- --host 0.0.0.0` 启动本地开发服务器
+
 贫血模式
 
 在最后一张词（N/N）已 revealed 的情况下按 Enter → 进入贫血屏，只有"随手拼？"标题和操作说明

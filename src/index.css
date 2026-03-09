@@ -552,7 +552,7 @@ kbd {
 }
 
 .card.no-anim .meaning,
-.card.no-anim .phrases,
+.card.no-anim .example,
 .card.no-anim .pronounce,
 .card.no-anim .progress-bar span {
   transition: none !important;
@@ -613,13 +613,19 @@ kbd {
   font-weight: 600;
 }
 
-.phrases {
+.example {
   margin: 0;
-  padding-left: 22px;
   display: grid;
-  gap: 6px;
-  font-size: 15px;
-  color: var(--ink);
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent-border) 38%, var(--border));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-soft) 62%, transparent),
+      rgba(255, 255, 255, 0.1)
+    );
   opacity: 1;
   transform: translateY(0px);
   transition:
@@ -627,9 +633,31 @@ kbd {
     transform 0.3s ease;
 }
 
-.phrases.is-hidden {
+.example.is-hidden {
   opacity: 0;
   transform: translateY(8px);
+}
+
+.example-label {
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--hint);
+}
+
+.example-sentence {
+  margin: 0;
+  font-size: clamp(16px, 2.3vw, 19px);
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.example-sentence strong {
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+  padding: 0 0.1em;
+  border-radius: 0.2em;
 }
 
 .pronounce {
@@ -930,6 +958,15 @@ button:disabled {
 
   .pronounce {
     margin-left: 0;
+  }
+
+  .example {
+    padding: 12px 14px 14px;
+  }
+
+  .example-sentence {
+    font-size: 16px;
+    line-height: 1.65;
   }
 }
 
