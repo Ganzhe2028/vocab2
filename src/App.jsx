@@ -10,12 +10,12 @@ const baseDeck = [
     meaningZh: "空的；未被占用",
     examples: [
       {
-        sentence: "I moved to the vacant seat near the window.",
+        sentence: "The bus had a vacant seat by the door.",
         focus: "vacant seat",
       },
       {
-        sentence: "The agent showed us a vacant apartment on the third floor.",
-        focus: "vacant apartment",
+        sentence: "We found a vacant room at the hotel.",
+        focus: "vacant room",
       },
     ],
   },
@@ -28,11 +28,11 @@ const baseDeck = [
     meaningZh: "接近；邻近",
     examples: [
       {
-        sentence: "The cafe is in close proximity to the station.",
+        sentence: "Our school is in close proximity to the library.",
         focus: "in close proximity to",
       },
       {
-        sentence: "Parents like the school's proximity to the park.",
+        sentence: "I like the apartment's proximity to the subway.",
         focus: "proximity to",
       },
     ],
@@ -46,12 +46,12 @@ const baseDeck = [
     meaningZh: "设计；制定；想出",
     examples: [
       {
-        sentence: "The team devised a strategy for the second round.",
-        focus: "devised a strategy",
+        sentence: "We devised a plan for the class trip.",
+        focus: "devised a plan",
       },
       {
-        sentence: "Engineers had to devise a plan before sunset.",
-        focus: "devise a plan",
+        sentence: "She devised a simple way to save time.",
+        focus: "devised a simple way",
       },
     ],
   },
@@ -64,12 +64,12 @@ const baseDeck = [
     meaningZh: "平凡的；乏味的",
     examples: [
       {
-        sentence: "After a month, the filing work felt like a mundane routine.",
-        focus: "mundane routine",
+        sentence: "Washing dishes feels like a mundane task.",
+        focus: "mundane task",
       },
       {
-        sentence: "She finished the mundane tasks before the guests arrived.",
-        focus: "mundane tasks",
+        sentence: "His office job became a mundane routine.",
+        focus: "mundane routine",
       },
     ],
   },
@@ -82,11 +82,11 @@ const baseDeck = [
     meaningZh: "半透明的",
     examples: [
       {
-        sentence: "Morning light passed through the translucent curtain.",
+        sentence: "Sunlight came through the translucent curtain.",
         focus: "translucent curtain",
       },
       {
-        sentence: "The lamp was covered with translucent glass.",
+        sentence: "The bathroom door has translucent glass.",
         focus: "translucent glass",
       },
     ],
@@ -100,12 +100,12 @@ const baseDeck = [
     meaningZh: "调查；探查",
     examples: [
       {
-        sentence: "The reporter kept trying to probe deeper into the funding trail.",
+        sentence: "The interviewer tried to probe deeper into his answer.",
         focus: "probe deeper",
       },
       {
-        sentence: "Auditors will probe the issue before signing off.",
-        focus: "probe the issue",
+        sentence: "Police will probe the cause of the fire.",
+        focus: "probe the cause",
       },
     ],
   },
@@ -118,12 +118,12 @@ const baseDeck = [
     meaningZh: "复苏；恢复；使复活",
     examples: [
       {
-        sentence: "Lower prices helped revive interest in the old neighborhood.",
-        focus: "revive interest",
+        sentence: "The poster helped revive interest in the club.",
+        focus: "revive interest in",
       },
       {
-        sentence: "The policy aims to revive the economy after the storm.",
-        focus: "revive the economy",
+        sentence: "Rain may revive the dry plants by morning.",
+        focus: "revive the dry plants",
       },
     ],
   },
@@ -136,11 +136,11 @@ const baseDeck = [
     meaningZh: "居住于；栖息于",
     examples: [
       {
-        sentence: "Few animals can inhabit the region all year long.",
-        focus: "inhabit the region",
+        sentence: "Many fish inhabit the river.",
+        focus: "inhabit the river",
       },
       {
-        sentence: "Rare birds inhabit the island each spring.",
+        sentence: "Only a few families inhabit the island in winter.",
         focus: "inhabit the island",
       },
     ],
@@ -154,12 +154,12 @@ const baseDeck = [
     meaningZh: "可信度；可信性",
     examples: [
       {
-        sentence: "The minister began to lose credibility after the report leaked.",
+        sentence: "He began to lose credibility after he lied.",
         focus: "lose credibility",
       },
       {
-        sentence: "The scandal widened the credibility gap between voters and officials.",
-        focus: "credibility gap",
+        sentence: "The false story hurt the website's credibility.",
+        focus: "website's credibility",
       },
     ],
   },
@@ -172,12 +172,12 @@ const baseDeck = [
     meaningZh: "清晰的；易懂的",
     examples: [
       {
-        sentence: "Her diagram gave us a lucid explanation of the process.",
+        sentence: "The teacher gave a lucid explanation of the rule.",
         focus: "lucid explanation",
       },
       {
-        sentence: "Her notes gave a lucid account of the accident.",
-        focus: "lucid account",
+        sentence: "She gave a lucid answer to the question.",
+        focus: "lucid answer",
       },
     ],
   },
@@ -190,12 +190,12 @@ const baseDeck = [
     meaningZh: "疲劳；疲惫",
     examples: [
       {
-        sentence: "By Friday afternoon, mental fatigue was slowing everyone down.",
+        sentence: "After the long game, mental fatigue made it hard to focus.",
         focus: "mental fatigue",
       },
       {
-        sentence: "During the night shift, fatigue sets in by midnight.",
-        focus: "fatigue sets in",
+        sentence: "By 10 p.m., fatigue set in and everyone grew quiet.",
+        focus: "fatigue set in",
       },
     ],
   },
@@ -208,12 +208,12 @@ const baseDeck = [
     meaningZh: "冲动",
     examples: [
       {
-        sentence: "I grabbed the notebook on impulse at the checkout.",
+        sentence: "I bought the snacks on impulse near the cashier.",
         focus: "on impulse",
       },
       {
-        sentence: "The store relies on impulse purchases near the register.",
-        focus: "impulse purchases",
+        sentence: "Stores put candy there to encourage impulse buys.",
+        focus: "impulse buys",
       },
     ],
   },
@@ -226,11 +226,11 @@ const baseDeck = [
     meaningZh: "后退；逐渐减弱",
     examples: [
       {
-        sentence: "At dusk, the boats seemed to recede into the distance.",
-        focus: "recede into the distance",
+        sentence: "The lights receded into the distance as the car drove away.",
+        focus: "receded into the distance",
       },
       {
-        sentence: "By morning, the pain receded after the medicine kicked in.",
+        sentence: "After some rest, the pain receded.",
         focus: "pain receded",
       },
     ],
@@ -244,11 +244,11 @@ const baseDeck = [
     meaningZh: "扭曲的；失真的",
     examples: [
       {
-        sentence: "The old radio played a distorted sound all evening.",
+        sentence: "The old speaker made a distorted sound.",
         focus: "distorted sound",
       },
       {
-        sentence: "A distorted view of the event spread online.",
+        sentence: "The mirror gave a distorted view of the room.",
         focus: "distorted view",
       },
     ],
@@ -262,12 +262,12 @@ const baseDeck = [
     meaningZh: "欺骗；欺诈",
     examples: [
       {
-        sentence: "The fake charity used deception tactics to gain trust.",
-        focus: "deception tactics",
+        sentence: "The trick was an act of deception.",
+        focus: "act of deception",
       },
       {
-        sentence: "The judge called it an act of deception.",
-        focus: "act of deception",
+        sentence: "The scam used deception to get money.",
+        focus: "used deception",
       },
     ],
   },
@@ -280,12 +280,12 @@ const baseDeck = [
     meaningZh: "繁荣的；富裕的",
     examples: [
       {
-        sentence: "A prosperous economy usually brings more hiring.",
-        focus: "prosperous economy",
+        sentence: "A prosperous town usually has many busy shops.",
+        focus: "prosperous town",
       },
       {
-        sentence: "Trade turned the village into a prosperous town.",
-        focus: "prosperous town",
+        sentence: "The family became prosperous after years of work.",
+        focus: "became prosperous",
       },
     ],
   },
@@ -298,12 +298,12 @@ const baseDeck = [
     meaningZh: "难以捉摸的；难以找到的",
     examples: [
       {
-        sentence: "Even after three meetings, an elusive answer kept slipping away.",
+        sentence: "An elusive answer kept bothering the class.",
         focus: "elusive answer",
       },
       {
-        sentence: "Police chased an elusive target through the alleys.",
-        focus: "elusive target",
+        sentence: "The small cat was elusive and hard to catch.",
+        focus: "was elusive",
       },
     ],
   },
@@ -316,12 +316,12 @@ const baseDeck = [
     meaningZh: "肿胀的；膨胀的",
     examples: [
       {
-        sentence: "The team cut a bloated budget before the launch.",
+        sentence: "The project started with a bloated budget.",
         focus: "bloated budget",
       },
       {
-        sentence: "He blamed the bloated stomach on the late meal.",
-        focus: "bloated stomach",
+        sentence: "I felt bloated after dinner.",
+        focus: "felt bloated",
       },
     ],
   },
@@ -334,11 +334,11 @@ const baseDeck = [
     meaningZh: "轻蔑；蔑视",
     examples: [
       {
-        sentence: "He spoke about the rule with open contempt.",
+        sentence: "He spoke with open contempt about the rule.",
         focus: "open contempt",
       },
       {
-        sentence: "She looked at the scam with contempt.",
+        sentence: "She looked at the bully with contempt.",
         focus: "with contempt",
       },
     ],
@@ -352,12 +352,12 @@ const baseDeck = [
     meaningZh: "百年纪念的",
     examples: [
       {
-        sentence: "The town is planning a centennial celebration this summer.",
+        sentence: "The school held a centennial celebration in May.",
         focus: "centennial celebration",
       },
       {
-        sentence: "They unveiled a centennial plaque in the lobby.",
-        focus: "centennial plaque",
+        sentence: "We saw a centennial sign in the hall.",
+        focus: "centennial sign",
       },
     ],
   },
@@ -370,12 +370,12 @@ const baseDeck = [
     meaningZh: "暴行；残暴行为",
     examples: [
       {
-        sentence: "The tribunal documented a war atrocity in detail.",
+        sentence: "The documentary described a war atrocity.",
         focus: "war atrocity",
       },
       {
-        sentence: "Witnesses said the unit committed an atrocity during the raid.",
-        focus: "committed an atrocity",
+        sentence: "Everyone was shocked by the atrocity.",
+        focus: "by the atrocity",
       },
     ],
   },
@@ -388,11 +388,11 @@ const baseDeck = [
     meaningZh: "幻影；幽灵",
     examples: [
       {
-        sentence: "After the surgery, he still felt phantom pains in his leg.",
-        focus: "phantom pains",
+        sentence: "He still felt phantom pain in his leg.",
+        focus: "phantom pain",
       },
       {
-        sentence: "In the silence, she imagined phantom sounds behind the wall.",
+        sentence: "She heard phantom sounds in the quiet room.",
         focus: "phantom sounds",
       },
     ],
@@ -406,11 +406,11 @@ const baseDeck = [
     meaningZh: "疏忽；过失",
     examples: [
       {
-        sentence: "The court found gross negligence in the safety checks.",
+        sentence: "The report called it gross negligence.",
         focus: "gross negligence",
       },
       {
-        sentence: "The family filed a negligence claim after the accident.",
+        sentence: "The family made a negligence claim after the fall.",
         focus: "negligence claim",
       },
     ],
@@ -425,12 +425,12 @@ const baseDeck = [
     meaningZh: "共谋；同谋",
     examples: [
       {
-        sentence: "Silence can become silent complicity when harm is obvious.",
-        focus: "silent complicity",
+        sentence: "Silence can become complicity in bullying.",
+        focus: "complicity in bullying",
       },
       {
-        sentence: "He denied complicity in the fraud during the hearing.",
-        focus: "complicity in the fraud",
+        sentence: "He denied complicity in the cheating.",
+        focus: "complicity in the cheating",
       },
     ],
   },
@@ -740,8 +740,14 @@ export default function App() {
 - meaning: 英文简明释义
 - meaningZh: 中文释义
 - examples: 例句数组，必须提供 2-3 个对象
-  - sentence: 例句，必须自然、简洁
+  - sentence: 例句，必须自然、简洁，适合 B1-B2 学习者理解
   - focus: 例句中需要加粗显示的原文片段，必须与 sentence 中的字符完全一致
+
+例句要求：
+- 优先使用学校、家庭、商店、工作、出行等日常语境
+- 尽量用短句，方便直接看懂上下文
+- 除目标词外，不要再塞进多个难词
+- 除非词本身必须如此，否则避免法律、政治、新闻、学术语境
 
 输出格式示例（仅 JSON，不要多余文字）：
 [
@@ -754,7 +760,7 @@ export default function App() {
     "meaningZh": "例子；示例",
     "examples": [
       {
-        "sentence": "This chart is a clear example of the trend.",
+        "sentence": "This is a clear example of the rule.",
         "focus": "clear example"
       },
       {
@@ -1222,8 +1228,7 @@ export default function App() {
                     复制提示词，发给 DeepSeek 或 ChatGPT
                   </div>
                   <p className="guide-step-desc">
-                    点下方「复制提示词」，然后打开 DeepSeek 或
-                    ChatGPT
+                    点下方「复制提示词」，让 AI 按 B1-B2 难度生成更容易理解的例句词卡。
                   </p>
                   <button
                     className="primary guide-step-btn"
@@ -1241,7 +1246,7 @@ export default function App() {
                 <div className="guide-step-body">
                   <div className="guide-step-title">把 AI 的回复粘贴进来</div>
                   <p className="guide-step-desc">
-                    AI 会生成一段包含 2-3 条例句和高亮片段的 JSON 代码，把它全选复制，粘贴到下方输入框。
+                    AI 会生成一段包含 2-3 条日常语境例句和高亮片段的 JSON 代码，把它全选复制，粘贴到下方输入框。
                   </p>
                   <div className="paste-block">
                     <textarea

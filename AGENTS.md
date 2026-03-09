@@ -18,7 +18,7 @@ This repository is a Vite + React flashcard app with a separate vocabulary list.
 
 ### `study` mode (default)
 
-Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and a light-weight list of 2-3 example sentences with bolded focus phrases.
+Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and a light-weight list of 2-3 B1-B2-friendly example sentences with bolded focus phrases.
 
 **Keyboard shortcuts:**
 
@@ -77,7 +77,7 @@ Example format:
 - Focus 2: Exact phrase from sentence 2 to emphasize.
 ```
 
-`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, and `examples`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and keep `examples` as a 2-3 item array of `{ sentence, focus }` objects where `focus` appears verbatim inside `sentence`.
+`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, and `examples`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and keep `examples` as a 2-3 item array of `{ sentence, focus }` objects where `focus` appears verbatim inside `sentence`. Prefer B1-B2-friendly daily-life contexts and avoid adding several extra hard words to the same sentence.
 
 Example `baseDeck` entry:
 
@@ -91,12 +91,12 @@ Example `baseDeck` entry:
   meaningZh: "空的；未被占用",
   examples: [
     {
-      sentence: "I moved to the vacant seat near the window.",
+      sentence: "The bus had a vacant seat by the door.",
       focus: "vacant seat",
     },
     {
-      sentence: "The agent showed us a vacant apartment on the third floor.",
-      focus: "vacant apartment",
+      sentence: "We found a vacant room at the hotel.",
+      focus: "vacant room",
     },
   ],
 },

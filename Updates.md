@@ -6,6 +6,7 @@ study 模式翻开卡片后，不再显示 phrases 列表，改为显示 2-3 条
 卡面会优先加粗每条例句里的 `focus`；若缺失或句中找不到，再回退到加粗 `term`
 导入提示词、JSON 归一化、JSON/Markdown 导出都已切到 `examples`
 `vocab.md` 词条格式从单组 Sentence/Focus 扩展为 2-3 组编号 Sentence/Focus
+整套内置例句已改写为更偏 B1-B2 的日常语境，降低法律/新闻/政治类表达的比例
 
 快速启动脚本
 
