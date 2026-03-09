@@ -1,10 +1,11 @@
 例句卡面更新
 
-study 模式翻开卡片后，不再显示 phrases 列表，改为显示 1 条例句
-每个词条新增 `sentence` 和 `sentenceFocus`
-卡面会优先加粗 `sentenceFocus`；若缺失或句中找不到，再回退到加粗 `term`
-导入提示词、JSON 归一化、JSON/Markdown 导出都已切到 `sentence` / `sentenceFocus`
-`vocab.md` 词条格式从 Meaning + Sentence 扩展为 Meaning + Sentence + Focus
+study 模式翻开卡片后，不再显示 phrases 列表，改为显示 2-3 条轻量例句列表
+移除了例句外层强调框，只保留更小字号的句子列表
+每个词条主字段改为 `examples`，每项是 `{ sentence, focus }`
+卡面会优先加粗每条例句里的 `focus`；若缺失或句中找不到，再回退到加粗 `term`
+导入提示词、JSON 归一化、JSON/Markdown 导出都已切到 `examples`
+`vocab.md` 词条格式从单组 Sentence/Focus 扩展为 2-3 组编号 Sentence/Focus
 
 快速启动脚本
 

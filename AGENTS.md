@@ -18,7 +18,7 @@ This repository is a Vite + React flashcard app with a separate vocabulary list.
 
 ### `study` mode (default)
 
-Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and one example sentence with a bolded focus phrase.
+Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and a light-weight list of 2-3 example sentences with bolded focus phrases.
 
 **Keyboard shortcuts:**
 
@@ -63,7 +63,7 @@ A fixed, circular GitHub logo button sits in the top-right corner of the viewpor
 
 ## Content Format & Naming Conventions
 
-`vocab.md` entries use a four-line block separated by a blank line. Use a word label in brackets, Title Case; then meaning, sentence, and focus lines with `- Meaning (EN):`, `- Sentence:`, and `- Focus:`. `Focus` must match the exact substring that should be emphasized inside the sentence. Avoid extra indentation or nested lists, and prefer ASCII unless a word requires otherwise.
+`vocab.md` entries use a multi-line block separated by a blank line. Use a word label in brackets, Title Case; then one meaning line followed by 2-3 numbered sentence/focus pairs with `- Sentence 1:`, `- Focus 1:`, `- Sentence 2:`, `- Focus 2:` and so on. Each `Focus` must match the exact substring that should be emphasized inside its sentence. Avoid extra indentation or nested lists, and prefer ASCII unless a word requires otherwise.
 
 Example format:
 
@@ -71,11 +71,13 @@ Example format:
 [Word]
 
 - Meaning (EN): short, clear definition
-- Sentence: A full sentence that ends with a period.
-- Focus: Exact phrase from the sentence to emphasize.
+- Sentence 1: A full sentence that ends with a period.
+- Focus 1: Exact phrase from sentence 1 to emphasize.
+- Sentence 2: Another sentence that shows the same or a related usage.
+- Focus 2: Exact phrase from sentence 2 to emphasize.
 ```
 
-`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, `sentence`, and `sentenceFocus`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and make sure `sentenceFocus` appears verbatim inside `sentence`.
+`src/App.jsx` `baseDeck` entries include `term`, `syllables`, `respell`, `pos`, `meaning`, `meaningZh`, and `examples`. Keep `term` in Title Case, use short part-of-speech tags with trailing periods (e.g. `adj.`), and keep `examples` as a 2-3 item array of `{ sentence, focus }` objects where `focus` appears verbatim inside `sentence`.
 
 Example `baseDeck` entry:
 
@@ -87,8 +89,16 @@ Example `baseDeck` entry:
   pos: "adj.",
   meaning: "empty; not occupied",
   meaningZh: "空的；未被占用",
-  sentence: "I moved to the vacant seat near the window.",
-  sentenceFocus: "vacant seat",
+  examples: [
+    {
+      sentence: "I moved to the vacant seat near the window.",
+      focus: "vacant seat",
+    },
+    {
+      sentence: "The agent showed us a vacant apartment on the third floor.",
+      focus: "vacant apartment",
+    },
+  ],
 },
 ```
 
