@@ -20,6 +20,8 @@ This repository is a Vite + React flashcard app with a separate vocabulary list.
 
 Standard flashcard loop. Shows one card at a time; Space/Enter toggle and advance. When revealed, the card shows part of speech, EN/ZH meaning, and a light-weight list of 2-3 B1-B2-friendly example sentences with bolded focus phrases.
 
+Bottom progress bar and count follow the study card position in this mode.
+
 **Keyboard shortcuts:**
 
 - `Space` — toggle reveal/hide meaning
@@ -43,6 +45,8 @@ Triggered after completing a full round (last card, revealed, Enter pressed). Cl
 ### `spell` mode (随手拼)
 
 Spelling practice over the current deck in order. Shows only pos + meaning; the word is hidden.
+
+Bottom progress bar and count switch to `spellIndex`, so both the bar and the numeric counter reflect current spelling progress instead of the study-card position.
 
 **State variables used:** `spellIndex` (current word index), `spellInput` (typed string), `spellResult` (`null | 'correct' | 'wrong'`), `shakeKey` (incremented to replay shake animation).
 

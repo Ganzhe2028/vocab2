@@ -1131,7 +1131,15 @@ export default function App() {
       ? "Enter for next, Space hides, Tab/<- for previous, Delete removes"
       : "Enter or Space reveals meaning + example sentences"
     : "Deck empty. Press Reset to reload.";
-  const progress = hasDeck ? (index + 1) / deck.length : 0;
+  const activeProgressPosition = hasDeck
+    ? mode === "spell"
+      ? spellIndex + 1
+      : index + 1
+    : 0;
+  const progress = hasDeck ? activeProgressPosition / deck.length : 0;
+  const progressLabel = hasDeck
+    ? `${activeProgressPosition} / ${deck.length}`
+    : "0 / 0";
 
   const cardClassName = useMemo(() => {
     return `card${noAnim ? " no-anim" : ""}`;
@@ -1454,9 +1462,7 @@ export default function App() {
                 <p className="spell-answer">{spellCorrectDisplay}</p>
               )}
 
-              <div className="spell-progress">
-                {spellIndex + 1} / {deck.length}
-              </div>
+              <div className="spell-progress">{progressLabel}</div>
             </section>
           );
         })()}
@@ -1518,9 +1524,7 @@ export default function App() {
           <div className="progress-bar">
             <span style={{ transform: `scaleX(${progress})` }}></span>
           </div>
-          <div className="count">
-            {hasDeck ? `${index + 1} / ${deck.length}` : "0 / 0"}
-          </div>
+          <div className="count">{progressLabel}</div>
         </div>
         <div className="controls">
           <button className="primary" type="button" onClick={toggleReveal}>
